@@ -25,7 +25,12 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/globals.h
 		src/core/InputManager.cpp
 		src/core/InputManager.h
-		src/math/GeoMa.h)
+		src/math/GeoMa.h
+		src/graphics/iBuffer.h
+		src/graphics/VertexBuffer.cpp
+		src/graphics/VertexBuffer.h
+		src/graphics/Shader.cpp
+		src/graphics/Shader.h)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
