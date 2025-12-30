@@ -22,7 +22,10 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/graphics/VertexArrays.h
 		src/core/Window.cpp
 		src/core/Window.h
-		src/globals.h)
+		src/globals.h
+		src/core/InputManager.cpp
+		src/core/InputManager.h
+		src/math/GeoMa.h)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
@@ -52,6 +55,7 @@ add_subdirectory(${GLAD_ROOT_DIR})
 target_include_directories(${PROJECT_NAME} 
 	PUBLIC ${GLFW_ROOT_DIR}/include
 	PUBLIC ${GLAD_ROOT_DIR}/include/glad
+
 )
 
 #		Include Files from Outside the Workspace Folder -> Like Vulkan SDK
@@ -65,7 +69,7 @@ target_include_directories(${PROJECT_NAME}
 
 #		Include Files From Within the Workspace Folder
 
-target_link_directories(${PROJECT_NAME} 
+target_link_directories(${PROJECT_NAME}
 	PRIVATE ${GLFW_ROOT_DIR}/src
 	PRIVATE ${GLAD_ROOT_DIR}/src}
 )

@@ -54,7 +54,7 @@ void Window::Init() {
 
     // TODO: set callbacks
     glfwSetFramebufferSizeCallback(m_Window, resize_callback);
-
+    glfwSetWindowUserPointer(m_Window, this);
 
     if (!gladLoadGL()) {
         std::cout << "Window constructor : Failed to load opengl\n";
