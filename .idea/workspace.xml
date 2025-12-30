@@ -35,11 +35,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/external/imgui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/shaders/basic.vert" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/basic.vert" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +172,7 @@
       <workItem from="1767091991372" duration="11311000" />
       <workItem from="1767106187129" duration="4055000" />
       <workItem from="1767112579549" duration="38000" />
-      <workItem from="1767112618511" duration="5223000" />
+      <workItem from="1767112618511" duration="6956000" />
     </task>
     <servers />
   </component>
