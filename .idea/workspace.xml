@@ -27,7 +27,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="" />
+    <list default="true" id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Pesto3D.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +85,7 @@
     "RunOnceActivity.west.config.association.type.startup.service": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging main",
     "last_opened_file_path": "C:/Users/Issam/Documents/ING3/3D Math/Pesto3D/src/core",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -156,7 +165,7 @@
       <option name="presentableId" value="Default" />
       <updated>1767091989575</updated>
       <workItem from="1767091991372" duration="11311000" />
-      <workItem from="1767106187129" duration="2004000" />
+      <workItem from="1767106187129" duration="4055000" />
     </task>
     <servers />
   </component>

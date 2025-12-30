@@ -28,7 +28,9 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/graphics/Shader.cpp
 		src/graphics/Shader.h
 		src/core/Time.cpp
-		src/core/Time.h)
+		src/core/Time.h
+		src/graphics/IndexBuffer.cpp
+		src/graphics/IndexBuffer.h)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
