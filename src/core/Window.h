@@ -28,6 +28,8 @@ public:
     inline GLFWwindow* GetWindowAddr() {return m_Window;}
     inline void SetWindowDimensions(int width, int height){m_Settings.Width = width, m_Settings.Height = height;}
 
+    void AddFpsTitle(std::string title){ glfwSetWindowTitle(m_Window, (m_Settings.Title + " - FPS " + title).c_str());}
+
 private:
     WindowSettings m_Settings;
     GLFWwindow* m_Window;

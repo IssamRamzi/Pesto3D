@@ -6,6 +6,7 @@
 #include "graphics/VertexArrays.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/Shader.h"
+#include "core/Time.h"
 
 const std::string SHADERS_PATH =  "../assets/shaders/";
 
@@ -13,6 +14,8 @@ void processInput(GLFWwindow *window);
 
 int main() {
 	Pesto::Window window;
+	Pesto::Time::Init();
+
 	f32 vertices[] = {
 		-0.5f, -0.5f, 0.0f,
 		0.5f, -0.5f, 0.0f,
@@ -29,6 +32,7 @@ int main() {
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
+		Pesto::Time::Update();
 		// input
 		// -----
 		processInput(window.GetWindowAddr());
@@ -42,6 +46,8 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
+
+		window.AddFpsTitle(std::to_string((u16)Pesto::Time::GetFPS()));
 	}
 	return 0;
 }
