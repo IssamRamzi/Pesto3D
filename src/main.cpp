@@ -7,6 +7,9 @@
 #include "graphics/VertexBuffer.h"
 #include "graphics/Shader.h"
 #include "core/Time.h"
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
 
 const std::string SHADERS_PATH =  "../assets/shaders/";
 
@@ -21,6 +24,15 @@ int main() {
 		0.5f, -0.5f, 0.0f,
 		0.5f,  0.5f, 0.0f,
 	};
+
+	//imgui init
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowAddr(), true);
+	ImGui_ImplOpenGL3_Init("#version 330 core");
 	Pesto::VertexArrays vao;
 	Pesto::VertexBuffer vbo{vertices, 3, 9};
 	vao.Bind();
@@ -33,6 +45,11 @@ int main() {
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
 		Pesto::Time::Update();
+		// imgui
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::ShowDemoWindow();
 		// input
 		// -----
 		processInput(window.GetWindowAddr());
@@ -44,6 +61,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
@@ -55,5 +74,8 @@ int main() {
 void processInput(GLFWwindow *window) {
 	if (Pesto::InputManager::IsKeyPressed(Pesto::ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 }

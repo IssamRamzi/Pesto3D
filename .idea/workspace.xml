@@ -3,6 +3,13 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="6" type="long" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
+  </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
 }</component>
@@ -14,11 +21,11 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="Pesto3D" targetName="update_mappings" folderName="GLFW3" />
-      <config projectName="Pesto3D" targetName="uninstall" folderName="GLFW3" />
-      <config projectName="Pesto3D" targetName="Pesto3D" />
-      <config projectName="Pesto3D" targetName="glfw" folderName="GLFW3" />
+      <config projectName="Pesto3D" targetName="uninstall" />
       <config projectName="Pesto3D" targetName="glad" />
+      <config projectName="Pesto3D" targetName="update_mappings" />
+      <config projectName="Pesto3D" targetName="glfw" />
+      <config projectName="Pesto3D" targetName="Pesto3D" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -28,14 +35,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Pesto3D.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/imgui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Pesto3D.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Pesto3D.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/IndexBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/IndexBuffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/IndexBuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/IndexBuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/VertexArrays.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/VertexArrays.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/VertexBuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/VertexBuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +58,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/external/glfw" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -74,6 +85,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "CMake Application.Pesto.executor": "Run",
+    "CMake Application.Pesto3D.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -85,8 +97,9 @@
     "RunOnceActivity.west.config.association.type.startup.service": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "Merging main",
-    "last_opened_file_path": "C:/Users/Issam/Documents/ING3/3D Math/Pesto3D/src/core",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "7b6aead9",
+    "last_opened_file_path": "/home/yanis/Documents/ESIEE/E3FIS1/ps/Pesto3D/CMakeLists.txt",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -109,18 +122,18 @@
       <recent name="C:\Users\Issam\Documents\ING3\3D Math\Pesto3D\src\core" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.Pesto">
+  <component name="RunManager" selected="CMake Application.Pesto3D">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Pesto" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pesto3D" RUN_TARGET_NAME="Pesto3D" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Pesto3D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pesto3D" TARGET_NAME="Pesto3D" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pesto3D" RUN_TARGET_NAME="Pesto3D">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -146,17 +159,18 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.uninstall" />
       <item itemvalue="CMake Application.glfw" />
+      <item itemvalue="CMake Application.uninstall" />
       <item itemvalue="CMake Application.update_mappings" />
-      <item itemvalue="CMake Application.Pesto" />
       <item itemvalue="CMake Application.Pesto3D" />
+      <item itemvalue="CMake Application.Pesto" />
       <item itemvalue="CMake Application.glad" />
     </list>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="" />
@@ -166,6 +180,8 @@
       <updated>1767091989575</updated>
       <workItem from="1767091991372" duration="11311000" />
       <workItem from="1767106187129" duration="4055000" />
+      <workItem from="1767112579549" duration="38000" />
+      <workItem from="1767112618511" duration="3081000" />
     </task>
     <servers />
   </component>
