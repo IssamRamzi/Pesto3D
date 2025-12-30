@@ -1,7 +1,3 @@
-# Get CMake PreDefined Variables https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
-# This CMake File for OpenGL Projects is compiled by Kushagra
-# I do not claim that this is the best CMake Configuration you will get but it does work.
-
 cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 project(Pesto3D)
@@ -30,7 +26,9 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/graphics/VertexBuffer.cpp
 		src/graphics/VertexBuffer.h
 		src/graphics/Shader.cpp
-		src/graphics/Shader.h)
+		src/graphics/Shader.h
+		src/core/Time.cpp
+		src/core/Time.h)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
