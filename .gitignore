@@ -8,6 +8,7 @@
 *.lo
 *.o
 *.obj
+/build
 
 # Precompiled Headers
 *.gch
@@ -51,5 +52,4 @@ _deps
 # Exclude Out Folder - As Everything there is compiled using CMake
 
 [Oo][Uu][Tt]
-
 .idea
