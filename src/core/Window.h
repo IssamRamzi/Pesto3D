@@ -1,0 +1,42 @@
+//
+// Created by Issam on 30/12/2025.
+//
+
+#ifndef PESTO3D_WINDOW_H
+#define PESTO3D_WINDOW_H
+
+#include <string>
+
+
+#include "../globals.h"
+#include "glad.h"
+#include "GLFW/glfw3.h"
+
+namespace Pesto{
+class Window {
+    typedef struct {
+        u16 Width {800};
+        u16 Height {600};
+        std::string Title{"Pesto3D"};
+    } WindowSettings;
+public:
+    Window();
+    Window(WindowSettings settings);
+    ~Window();
+
+    inline WindowSettings GetSettings() {return m_Settings;}
+    inline GLFWwindow* GetWindowAddr() {return m_Window;}
+    inline void SetWindowDimensions(int width, int height){m_Settings.Width = width, m_Settings.Height = height;}
+
+private:
+    WindowSettings m_Settings;
+    GLFWwindow* m_Window;
+
+private:
+    void Init();
+
+
+};
+}
+
+#endif //PESTO3D_WINDOW_H

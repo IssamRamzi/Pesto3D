@@ -17,7 +17,12 @@ file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.hpp
 )
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
+		src/graphics/VertexArrays.cpp
+		src/graphics/VertexArrays.h
+		src/core/Window.cpp
+		src/core/Window.h
+		src/globals.h)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
