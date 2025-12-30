@@ -7,7 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="6" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
   </component>
   <component name="CMakePresetLoader">{
@@ -35,17 +35,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0117f16-c289-4226-ae95-21fc03ed43e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/imgui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/external/imgui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Pesto3D.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Pesto3D.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/IndexBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/IndexBuffer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/IndexBuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/IndexBuffer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/VertexArrays.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/VertexArrays.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/VertexBuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/VertexBuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgui" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +52,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/external/glfw" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -98,7 +92,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "7b6aead9",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/home/yanis/Documents/ESIEE/E3FIS1/ps/Pesto3D/CMakeLists.txt",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -181,7 +175,7 @@
       <workItem from="1767091991372" duration="11311000" />
       <workItem from="1767106187129" duration="4055000" />
       <workItem from="1767112579549" duration="38000" />
-      <workItem from="1767112618511" duration="3081000" />
+      <workItem from="1767112618511" duration="5223000" />
     </task>
     <servers />
   </component>

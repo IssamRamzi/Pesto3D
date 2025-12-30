@@ -14,14 +14,14 @@ file(GLOB_RECURSE HEADER_FILES
 )
 
 file(GLOB IMGUI_SOURCES
-		"imgui/*.cpp"
-		"imgui/backends/imgui_impl_glfw.cpp"
-		"imgui/backends/imgui_impl_opengl3.cpp"
+		"external/imgui/*.cpp"
+		"external/imgui/backends/imgui_impl_glfw.cpp"
+		"external/imgui/backends/imgui_impl_opengl3.cpp"
 )
 file(GLOB IMGUI_HEADERS
-		"imgui/*.h"
-		"imgui/backends/imgui_impl_glfw.h"
-		"imgui/backends/imgui_impl_opengl3.h"
+		"external/imgui/*.h"
+		"external/imgui/backends/imgui_impl_glfw.h"
+		"external/imgui/backends/imgui_impl_opengl3.h"
 )
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
@@ -77,8 +77,8 @@ add_subdirectory(${GLAD_ROOT_DIR})
 target_include_directories(${PROJECT_NAME}
 	PUBLIC ${GLFW_ROOT_DIR}/include
 	PUBLIC ${GLAD_ROOT_DIR}/include/glad
-	PUBLIC ${CMAKE_SOURCE_DIR}/imgui
-	PUBLIC ${CMAKE_SOURCE_DIR}/imgui/backends
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui/backends
 )
 
 #		Include Files from Outside the Workspace Folder -> Like Vulkan SDK

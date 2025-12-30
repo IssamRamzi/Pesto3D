@@ -20,9 +20,9 @@ int main() {
 	Pesto::Time::Init();
 
 	f32 vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.5f,  0.5f, 0.0f,
+		-0.05f, -0.05f, 0.0f,
+		0.05f, -0.05f, 0.0f,
+		0.05f,  0.05f, 0.0f,
 	};
 
 	//imgui init
@@ -30,9 +30,10 @@ int main() {
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowAddr(), true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
+	ImGui::StyleColorsDark();
+
 	Pesto::VertexArrays vao;
 	Pesto::VertexBuffer vbo{vertices, 3, 9};
 	vao.Bind();
@@ -45,11 +46,8 @@ int main() {
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
 		Pesto::Time::Update();
-		// imgui
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		ImGui::ShowDemoWindow();
+
+		//ImGui::ShowDemoWindow();
 		// input
 		// -----
 		processInput(window.GetWindowAddr());
@@ -61,8 +59,19 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//instancing
+		//glDrawArraysInstanced();
+
+		// imgui
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::Begin("Settings");
+		ImGui::Text("Particle System parameters");
+		ImGui::End();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
