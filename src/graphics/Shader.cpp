@@ -3,11 +3,18 @@
 //
 
 #include "Shader.h"
+#include <cstdio>
+#include <fstream>
+#include <stdio.h>
 
 namespace Pesto {
     std::string Shader::ReadShader(std::string path){
         FILE *file_ptr;
-        fopen_s(&file_ptr, path.c_str(), "r");;
+        #ifdef _WIN32
+          fopen_s(&file_ptr, path.c_str(), "r");
+        #else
+          file_ptr = fopen(path.c_str(), "r");
+        #endif // _WIN32
         if(file_ptr == NULL){
             std::cout << "Failed to read shader file " << path << std::endl;
             return "";

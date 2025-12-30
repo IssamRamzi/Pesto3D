@@ -39,8 +39,11 @@ find_package(OpenGL REQUIRED)
 # Variable for the Libs to add to the Linkers
 if (WIN32)
 	set(LIBS glfw opengl32 glad)
+elseif(APPLE)
+    set(LIBS glfw glad "-framework OpenGL" "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 elseif (UNIX)
 	set(LIBS glfw GL glad)
+
 endif ()
 
 # Variables for Paths of External Libraries
@@ -76,7 +79,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_directories(${PROJECT_NAME}
 	PRIVATE ${GLFW_ROOT_DIR}/src
-	PRIVATE ${GLAD_ROOT_DIR}/src}
+	PRIVATE ${GLAD_ROOT_DIR}/src
 )
 
 # Add the Libs to the Linker for the Project
