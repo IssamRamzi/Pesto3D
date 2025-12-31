@@ -3,14 +3,25 @@ cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 project(Pesto3D)
 
 # Add all Source Files
-file(GLOB_RECURSE SOURCE_FILES 
+file(GLOB_RECURSE SOURCE_FILES
 	${CMAKE_SOURCE_DIR}/src/*.cpp
 )
 
 # Add all Header Files
-file(GLOB_RECURSE HEADER_FILES 
+file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.h
 	${CMAKE_SOURCE_DIR}/src/*.hpp
+)
+
+file(GLOB IMGUI_SOURCES
+		"external/imgui/*.cpp"
+		"external/imgui/backends/imgui_impl_glfw.cpp"
+		"external/imgui/backends/imgui_impl_opengl3.cpp"
+)
+file(GLOB IMGUI_HEADERS
+		"external/imgui/*.h"
+		"external/imgui/backends/imgui_impl_glfw.h"
+		"external/imgui/backends/imgui_impl_opengl3.h"
 )
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
@@ -30,7 +41,10 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/core/Time.cpp
 		src/core/Time.h
 		src/graphics/IndexBuffer.cpp
-		src/graphics/IndexBuffer.h)
+		src/graphics/IndexBuffer.h
+		${IMGUI_SOURCES}
+		${IMGUI_HEADERS}
+)
 
 
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
@@ -60,10 +74,11 @@ add_subdirectory(${GLAD_ROOT_DIR})
 
 #		Include Files From Within the Workspace Folder
 
-target_include_directories(${PROJECT_NAME} 
+target_include_directories(${PROJECT_NAME}
 	PUBLIC ${GLFW_ROOT_DIR}/include
 	PUBLIC ${GLAD_ROOT_DIR}/include/glad
-
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui/backends
 )
 
 #		Include Files from Outside the Workspace Folder -> Like Vulkan SDK

@@ -6,7 +6,7 @@
 #define PESTO3D_INDEXBUFFER_H
 #include "iBuffer.h"
 #include "glad/glad.h"
-#include "glfw/glfw3.h"
+#include "GLFW/glfw3.h"
 
 namespace Pesto{
     class IndexBuffer : iBuffer{
