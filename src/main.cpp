@@ -29,7 +29,7 @@ int main() {
 	Pesto::InputManager::Init(window.GetWindowAddr());
 	Pesto::Time::Init();
 	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 12.0});
-	camera.SetSpeed(1.0f);
+	camera.SetSpeed(.05f);
 	camera.SetFov(65);
 
 
@@ -140,14 +140,16 @@ int main() {
 
 		window.AddFpsTitle(std::to_string((u16)Pesto::Time::GetFPS()));
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	return 0;
 }
 
 void processInput(GLFWwindow *window) {
 	if (Pesto::InputManager::IsKeyPressed(Pesto::ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
 	}
 }
