@@ -148,7 +148,7 @@ std::ostream& operator<<(std::ostream& os, Matrix2<Type> mat){
     return os;
 }
 
-using Matrix2F = Matrix2<double>;
+using Matrix2F = Matrix2<float>;
 using Matrix2I = Matrix2<int>;
 }
 #endif // MATRIX2_H

@@ -9,6 +9,7 @@
 
 
 #include "../globals.h"
+#include "../math/GeoMa.h"
 #include "glad.h"
 #include "GLFW/glfw3.h"
 
@@ -29,6 +30,8 @@ public:
     inline void SetWindowDimensions(int width, int height){m_Settings.Width = width, m_Settings.Height = height;}
 
     void AddFpsTitle(std::string title){ glfwSetWindowTitle(m_Window, (m_Settings.Title + " - FPS " + title).c_str());}
+    f32 GetWindowWidth(){return m_Settings.Width;}
+    f32 GetWindowHeight(){return m_Settings.Height;}
 
 private:
     WindowSettings m_Settings;

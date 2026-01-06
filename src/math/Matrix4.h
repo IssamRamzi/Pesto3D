@@ -245,6 +245,39 @@ public:
         result[11] = translation.z;
         return result;
     }
+
+    static Matrix4<Type> LookAt(const Vector3<Type>& eye, const Vector3<Type>& center, const Vector3<Type>& up) {
+        Vector3<Type> f = (center - eye).Normalized();
+        Vector3<Type> s = Vector3<Type>::Cross(f, up).Normalized();
+        Vector3<Type> u = Vector3<Type>::Cross(s, f);
+
+        Matrix4<Type> Result(1.0);
+        Result(0, 0) = s.x;
+        Result(0, 1) = s.y;
+        Result(0, 2) = s.z;
+        Result(1, 0) = u.x;
+        Result(1, 1) = u.y;
+        Result(1, 2) = u.z;
+        Result(2, 0) = -f.x;
+        Result(2, 1) = -f.y;
+        Result(2, 2) = -f.z;
+        Result(0, 3) = -Vector3<Type>::Dot(s, eye);
+        Result(1, 3) = -Vector3<Type>::Dot(u, eye);
+        Result(2, 3) = Vector3<Type>::Dot(f, eye);
+        return Result;
+    }
+
+    static Matrix4<Type> Perspective(Type fovy, Type aspect, Type zNear, Type zFar) {
+        Type const tanHalfFovy = tan(fovy / static_cast<Type>(2));
+        Matrix4<Type> Result;
+        Result.ToZero();
+        Result(0, 0) = static_cast<Type>(1) / (aspect * tanHalfFovy);
+        Result(1, 1) = static_cast<Type>(1) / (tanHalfFovy);
+        Result(2, 2) = -(zFar + zNear) / (zFar - zNear);
+        Result(3, 2) = -static_cast<Type>(1);
+        Result(2, 3) = -(static_cast<Type>(2) * zFar * zNear) / (zFar - zNear);
+        return Result;
+    }
 };
 
 template<class Type>
@@ -258,7 +291,7 @@ std::ostream& operator<<(std::ostream& os, Matrix4<Type> mat){
     return os;
 }
 
-using Matrix4F = Matrix4<double>;
+using Matrix4F = Matrix4<float>;
 using Matrix4I = Matrix4<int>;
 
 }

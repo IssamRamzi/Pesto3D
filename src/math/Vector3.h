@@ -153,13 +153,21 @@ public:
 	}
 
     // TODO
-	Type						Cross(const Vector3<Type>& another) const{
-		return x*another.y - y*another.x;
+	Vector3<Type>				Cross(const Vector3<Type>& another) const{
+		return Vector3<Type>(
+			y * another.z - z * another.y,
+			z * another.x - x * another.z,
+			x * another.y - y * another.x
+    	);
 	}
 
     // TODO
-	static Type 				Cross(const Vector3<Type>& first, const Vector3<Type>& second){
-		return first.x*second.y - first.y*second.x;
+	static Vector3<Type>		Cross(const Vector3<Type>& first, const Vector3<Type>& second){
+		return Vector3<Type>(
+			first.y * second.z - first.z * second.y,
+			first.z * second.x - first.x * second.z,
+			first.x * second.y - first.y * second.x
+		);
 	}
 
 	double						Distance(const Vector3& another) const{
@@ -208,8 +216,8 @@ template<class Type>
 Vector3<Type> Vector3<Type>::BACK{ 0, 0, -1 };
 
 using Vector3I = Vector3<int>;
-using Vector3F = Vector3<double>;
+using Vector3F = Vector3<float>;
 using Point3I = Vector3<int>;
-using Point3F = Vector3<double>;
+using Point3F = Vector3<float>;
 
 }

@@ -7,6 +7,7 @@
 #include "core/Window.h"
 #include "core/InputManager.h"
 #include "core/Time.h"
+#include "core/Camera.h"
 
 #include "graphics/Shader.h"
 #include "graphics/VertexArrays.h"
@@ -26,6 +27,10 @@ int main() {
 
 	Pesto::Window window;
 	Pesto::Time::Init();
+	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 12.0});
+	camera.SetSpeed(5.0f);
+	camera.SetFov(65);
+
 
 	f32 vertices[] = {
 		-0.5, -0.5,
@@ -79,6 +84,9 @@ int main() {
 		//ImGui::ShowDemoWindow();
 		// input
 		// -----
+		camera.ProcessKeyboardInputs();
+    	camera.ProcessMouseInputs();
+
 		processInput(window.GetWindowAddr());
 
 		// render
@@ -98,6 +106,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.EnableShader();
+		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 100));
 		vao.Bind();
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
 

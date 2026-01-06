@@ -178,8 +178,8 @@ template<class Type>
 Vector4<Type> Vector4<Type>::ONE{ 1, 1, 1, 1 };
 
 using Vector4I = Vector4<int>;
-using Vector4F = Vector4<double>;
+using Vector4F = Vector4<float>;
 using Point4I = Vector4<int>;
-using Point4F = Vector4<double>;
+using Point4F = Vector4<float>;
 
 }

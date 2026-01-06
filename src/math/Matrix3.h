@@ -220,7 +220,7 @@ std::ostream& operator<<(std::ostream& os, Matrix3<Type> mat){
     return os;
 }
 
-using Matrix3F = Matrix3<double>;
+using Matrix3F = Matrix3<float>;
 using Matrix3I = Matrix3<int>;
 
 }
