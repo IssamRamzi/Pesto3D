@@ -26,9 +26,10 @@ int main() {
 	// TODO: refactor batching in class
 
 	Pesto::Window window;
+	Pesto::InputManager::Init(window.GetWindowAddr());
 	Pesto::Time::Init();
 	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 12.0});
-	camera.SetSpeed(5.0f);
+	camera.SetSpeed(1.0f);
 	camera.SetFov(65);
 
 
@@ -80,10 +81,12 @@ int main() {
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
 		Pesto::Time::Update();
+		Pesto::InputManager::Update();
 
 		//ImGui::ShowDemoWindow();
 		// input
 		// -----
+		// std::cout << "Before input" << std::endl;
 		camera.ProcessKeyboardInputs();
     	camera.ProcessMouseInputs();
 
@@ -110,9 +113,6 @@ int main() {
 		vao.Bind();
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
 
-		
-
-
 
 		// imgui
 		ImGui_ImplOpenGL3_NewFrame();
@@ -120,6 +120,17 @@ int main() {
 		ImGui::NewFrame();
 		ImGui::Begin("Settings");
 		ImGui::Text("Particle System parameters");
+		if (ImGui::CollapsingHeader("Camera")) {
+				ImGui::Text("FOV %d", camera.GetFov());
+				ImGui::Text("Position: (%.2f, %.2f, %.2f)",
+							camera.GetPosition().x,
+							camera.GetPosition().y,
+							camera.GetPosition().z);
+				ImGui::Text("Orientation: (%.2f, %.2f, %.2f)",
+							camera.GetOrientation().x,
+							camera.GetOrientation().y,
+							camera.GetOrientation().z);
+		}
 		ImGui::End();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

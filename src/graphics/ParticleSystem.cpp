@@ -27,7 +27,7 @@ namespace Pesto
         float vely = (float)rand() / (float)RAND_MAX * SPEED;
 
        p.position = _position + GeoMa::Vector3F(
-            ((float)rand() / (float)RAND_MAX - 0.5f) * 0.1f,
+            ((float)rand() / (float)RAND_MAX - 0.5f) * 100.f,
             0.0f, 
             0.0f
         );
