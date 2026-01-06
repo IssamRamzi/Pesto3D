@@ -42,6 +42,10 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/core/Time.h
 		src/graphics/IndexBuffer.cpp
 		src/graphics/IndexBuffer.h
+		src/graphics/ParticleSystem.cpp
+		src/graphics/ParticleSystem.h
+		src/core/Camera.cpp
+		src/core/Camera.h
 		${IMGUI_SOURCES}
 		${IMGUI_HEADERS}
 )

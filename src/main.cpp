@@ -1,30 +1,40 @@
 #include <iostream>
 
-#include "core/Window.h"
-#include "core/InputManager.h"
-
-#include "graphics/VertexArrays.h"
-#include "graphics/VertexBuffer.h"
-#include "graphics/Shader.h"
-#include "core/Time.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
+
+#include "core/Window.h"
+#include "core/InputManager.h"
+#include "core/Time.h"
+
+#include "graphics/Shader.h"
+#include "graphics/VertexArrays.h"
+#include "graphics/VertexBuffer.h"
+#include "graphics/IndexBuffer.h"
+#include "graphics/ParticleSystem.h"
+
 #include "math/GeoMa.h"
 
-const std::string SHADERS_PATH =  "../assets/shaders/";
+const std::string SHADERS_PATH =  "../../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
 int main() {
+
+	// TODO: refactor batching in class
+
 	Pesto::Window window;
 	Pesto::Time::Init();
 
 	f32 vertices[] = {
-		-0.05f, -0.05f, 0.0f,
-		0.05f, -0.05f, 0.0f,
-		0.05f,  0.05f, 0.0f,
+		-0.5, -0.5,
+		0.5, -0.5, 
+		0.5, 0.5,
+		-0.5, 0.5f
 	};
+
+	u32 indices[] = {0,1,2,2,3,0};
 
 	//imgui init
 	IMGUI_CHECKVERSION();
@@ -35,24 +45,28 @@ int main() {
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 	ImGui::StyleColorsDark();
 
+	Pesto::ParticleSystem particleSystem;
+
 	Pesto::VertexArrays vao;
-	Pesto::VertexBuffer vbo{vertices, 3, 9};
+	Pesto::VertexBuffer vbo{vertices, 2, 8};
+	Pesto::IndexBuffer ebo(indices, 6);
+
+	// gpu pipeline
 	vao.Bind();
-	vao.AddBuffer(vbo, 0, 3, 3 * sizeof(float), (void*)0);
+	vao.AddBuffer(vbo, 0, 2, 2 * sizeof(float), (void*)0);
+	ebo.Bind();
+
+	// batching
+	Pesto::VertexBuffer instanceVbo;
+	instanceVbo.Bind();
+	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, sizeof(GeoMa::Vector3F), 0);
+	
+	glVertexAttribDivisor(1,1); // 
 	vao.Unbind();
 
-	//instancing test
-	GeoMa::Vector3F translations[100];
-	int idx = 0;
-	float offset = 0.1f;
-	for (int y = -10; y < 10; y+=2) {
-		for (int x = -10; x < 10; x+=2) {
-			GeoMa::Vector3F translation;
-			translation.x = (float)x / 10.0f;
-			translation.y = (float)y / 10.0f;
-			translations[idx++] = translation;
-		}
-	}
+	particleSystem.setEmitterPosition(GeoMa::Vector3F(0.0f, 0.0f, 0.0f));
 
 
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
@@ -69,17 +83,27 @@ int main() {
 
 		// render
 		// ------
-		shader.EnableShader();
-		for (unsigned int i = 0; i < 100; i++) {
-			std::string uniformName = "offsets[" + std::to_string(i) + "]";
-			shader.SetUniform3f(uniformName.c_str(), translations[i]);
-		}
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		particleSystem.update(Pesto::Time::GetDeltaTime());
+
+		// update l'instancing
+		instanceVbo.Bind();
+		glBufferSubData(
+					GL_ARRAY_BUFFER, 0, 
+                    particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), 
+                    particleSystem.getPositions().data()
+				
+				);
+
+		glClearColor(0.2,0.3,0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		shader.EnableShader();
 		vao.Bind();
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		//instancing
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 100);
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
+
+		
+
+
 
 		// imgui
 		ImGui_ImplOpenGL3_NewFrame();
