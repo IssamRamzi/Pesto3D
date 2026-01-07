@@ -36,8 +36,6 @@ Matrix4F Camera::CalculateMatrix(float nearPlane, float farPlane) {
 }
 
 void Camera::ProcessKeyboardInputs() {
-    std::cout << "In inputs Camera" << std::endl;
-
     if (InputManager::IsKeyDown(LSHIFT)) {
         m_speed = m_initialSpeed * 3.0;
     } else {

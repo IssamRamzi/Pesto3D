@@ -33,14 +33,13 @@ namespace Pesto
         );
         p.velocity = GeoMa::Vector3F(velx, vely, 0.0f);
         p.size = _particleSize;
-        p.lifetime = rand() % 1800 + 1800; // 0.5s > life > 1s  (pas sur)
+        p.lifetime = rand() % 1800 + 1800; // 0.5s > life > 1s
         p.isDead = false;
     }
 
     void ParticleSystem::update(f32 delta){
         for(size_t i = 0; i < _mParticles.size(); i++){
             Particle& p = _mParticles[i];
-            GeoMa::Matrix4F modelMatrix = GeoMa::Matrix4F::Scale(p.size, {1,1,1});
 
             if(!p.isDead){
                 p.velocity.y -= 9.8 * delta * 0.1;
@@ -59,4 +58,11 @@ namespace Pesto
             }
         }
     }
-} 
+
+    void ParticleSystem::render(Shader shader) {
+        for(size_t i = 0; i < _mParticles.size(); i++) {
+            Particle& p = _mParticles[i];
+            shader.SetUniform1f("particleSize", p.size);
+        }
+    }
+}

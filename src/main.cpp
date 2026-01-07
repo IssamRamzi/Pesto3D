@@ -13,11 +13,11 @@
 #include "graphics/VertexArrays.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/IndexBuffer.h"
-#include "graphics/ParticleSystem.h"
+#include "particles/ParticleSystem.h"
 
 #include "math/GeoMa.h"
 
-const std::string SHADERS_PATH =  "../../assets/shaders/";
+const std::string SHADERS_PATH =  "../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
@@ -76,7 +76,6 @@ int main() {
 
 
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
-
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
@@ -109,7 +108,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.EnableShader();
-		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 100));
+		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
 		vao.Bind();
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
 
@@ -135,6 +134,7 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
@@ -144,7 +144,6 @@ int main() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
 	return 0;
 }
 
