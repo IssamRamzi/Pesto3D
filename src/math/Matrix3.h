@@ -104,9 +104,12 @@ public:
             for(int j = 0; i < 3; j++){
                 Type value = 0;
                 for(int k = 0; k < 3; k++){
+                    value += (*this)(i, k) * matrix(k,j)
                 }
+                res(i,j) = value;
             }
         }
+        return res;
     }
     
     void                        ToZero() {

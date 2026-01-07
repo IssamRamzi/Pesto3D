@@ -16,8 +16,8 @@
 namespace Pesto{
 class Window {
     typedef struct {
-        u16 Width {800};
-        u16 Height {600};
+        u16 Width {1600};
+        u16 Height {900};
         std::string Title{"Pesto3D"};
     } WindowSettings;
 public:

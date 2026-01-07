@@ -1,5 +1,5 @@
 #pragma once
-#include "../math/Vector3.h"
+#include "../math/GeoMa.h"
 #include "../globals.h"
 #include <vector>
 
@@ -14,7 +14,7 @@ namespace Pesto {
             GeoMa::Vector3F position;
             GeoMa::Vector3F velocity;
             int lifetime = 5.0f;
-            float size = 1.0f;
+            float size = 0.3f;
             bool isDead = false;
         };
 
