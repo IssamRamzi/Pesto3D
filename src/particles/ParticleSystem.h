@@ -7,7 +7,7 @@
 
 
 namespace Pesto {
-    #define MAX_PARTICLES 1000000
+    #define MAX_PARTICLES 500000
 
     class ParticleSystem
     {
@@ -16,7 +16,7 @@ namespace Pesto {
             GeoMa::Vector3F position;
             GeoMa::Vector3F velocity;
             int lifetime = 5.0f;
-            float size = 1.0f;
+            float size = 0.2f;
             bool isDead = false;
         };
 
@@ -39,8 +39,6 @@ namespace Pesto {
         std::vector<Particle> _mParticles;
         GeoMa::Vector3F _position;
     
-        float _particleSize = 5.0f;
-
         // pour l'instancing
         std::vector<GeoMa::Vector3F> _positions;
         std::vector<GeoMa::Vector3F> _sizes;

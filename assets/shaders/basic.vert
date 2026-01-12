@@ -5,6 +5,12 @@ layout(location = 1) in vec3 aInstancePos;
 uniform mat4 camMatrix;
 uniform float particleSize = 0.1;
 
+struct Particle{
+    vec3 position;
+    vec3 velocity;
+    vec3 size;
+};
+
 // https://stackoverflow.com/questions/4200224/random-noise-functions-for-glsl
 float rand(vec2 co){
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);

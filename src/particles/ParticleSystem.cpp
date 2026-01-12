@@ -32,32 +32,31 @@ namespace Pesto
             0.0f
         );
         p.velocity = GeoMa::Vector3F(velx, vely, 0.0f);
-        p.size = _particleSize;
         p.lifetime = rand() % 1800 + 1800; // 0.5s > life > 1s
         p.isDead = false;
     }
 
-    void ParticleSystem::update(f32 delta){
-        for(size_t i = 0; i < _mParticles.size(); i++){
-            Particle& p = _mParticles[i];
+        void ParticleSystem::update(f32 delta){
+            for(size_t i = 0; i < _mParticles.size(); i++){
+                Particle& p = _mParticles[i];
 
-            if(!p.isDead){
-                p.velocity.y -= 9.8 * delta * 0.1;
-                p.position.x += p.velocity.x * delta;
-                p.position.y += p.velocity.y * delta;
-                p.position.z += p.velocity.z * delta;
+                if(!p.isDead){
+                    p.velocity.y -= 9.8 * delta * 0.1;
+                    p.position.x += p.velocity.x * delta;
+                    p.position.y += p.velocity.y * delta;
+                    p.position.z += p.velocity.z * delta;
 
-                // TODO: process lifetime
-                if(p.lifetime < 0){
-                    resetParticle(i);
+                    // TODO: process lifetime
+                    if(p.lifetime < 0){
+                        resetParticle(i);
+                    }
+
+                    // pour le batching
+                    _positions[i] = p.position;
+                    _sizes[i] = p.size;
                 }
-
-                // pour le batching
-                _positions[i] = p.position;
-                _sizes[i] = p.size;
             }
         }
-    }
 
     void ParticleSystem::render(Shader shader) {
         for(size_t i = 0; i < _mParticles.size(); i++) {

@@ -48,7 +48,6 @@ void Camera::ProcessKeyboardInputs() {
     }
 
     if (InputManager::IsKeyDown(Z)) {
-        std::cout << "Pressing Z"<<std::endl;
         m_position = m_position + (m_orientation * m_speed);
     }
     if (InputManager::IsKeyDown(S)) {
