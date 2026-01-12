@@ -15,7 +15,7 @@ namespace Pesto {
         {
             GeoMa::Vector3F position;
             GeoMa::Vector3F velocity;
-            int lifetime = 5.0f;
+            float lifetime = 5.0f;
             float size = 0.2f;
             bool isDead = false;
         };
@@ -25,8 +25,10 @@ namespace Pesto {
         void resetParticle(std::size_t idx);
         void update(f32 delta);
         void render(Shader shader);
+        void resetAllParticles();
+        //void setLifeTime(float lifetime = 1.0f, size_t idx);
 
-        void setEmitterPosition(GeoMa::Vector3F newPosition){ _position = newPosition; }
+        void setEmitterPosition(GeoMa::Vector3F newPosition);
 
         u16 getParticlesCount()const{return MAX_PARTICLES;}
         // les getters pour l'instancing

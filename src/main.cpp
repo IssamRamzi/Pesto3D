@@ -22,7 +22,7 @@
 
 
 
-const std::string SHADERS_PATH =  "../../assets/shaders/";
+const std::string SHADERS_PATH =  "../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
@@ -108,6 +108,9 @@ int main() {
 		// std::cout << "Before input" << std::endl;
 		if(Pesto::InputManager::IsMouseClicked(Pesto::MouseButton::BUTTON_LEFT))
 			camera.ProcessMouseInputs();
+
+		if (Pesto::InputManager::IsKeyPressed(Pesto::Key::R))
+			particleSystem.resetAllParticles();
 			
 		camera.ProcessKeyboardInputs();
 		processInput(window.GetWindowAddr());
@@ -136,7 +139,8 @@ int main() {
 
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
-		// particleSystem.render(shader);
+		//shader.SetUniform4f("Color", {1.0f, 0.5f, 0.2f, 1.0f * particleSystem.lifespan});
+		particleSystem.render(shader);
 		// std::cout << "After sending size" << std::endl;
 		vao.Bind();
 #ifdef DRAW_QUADS

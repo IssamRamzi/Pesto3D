@@ -16,6 +16,19 @@ namespace Pesto
         }
     }
 
+    void ParticleSystem::resetAllParticles()
+    {
+        for(int i = 0 ; i < MAX_PARTICLES; i++){
+            resetParticle(i);
+        }
+    }
+
+    void ParticleSystem::setEmitterPosition(GeoMa::Vector3F newPosition)
+    {
+        _position = newPosition;
+    }
+
+
     void ParticleSystem::resetParticle(std::size_t idx){
         if(idx > _mParticles.size()){
             std::cout << "reset particle : overflow idx" << std::endl;
@@ -23,18 +36,20 @@ namespace Pesto
         }
 
         Particle& p = _mParticles[idx];
-        float velx = ((float)rand() / (float)RAND_MAX - 0.5f) * 2.0f;
-        float vely = (float)rand() / (float)RAND_MAX * SPEED;
+        float velx = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 2.0f;
+        float vely = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * SPEED;
 
        p.position = _position + GeoMa::Vector3F(
-            ((float)rand() / (float)RAND_MAX - 0.5f) * 100.f,
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 100.f,
             0.0f, 
             0.0f
         );
         p.velocity = GeoMa::Vector3F(velx, vely, 0.0f);
-        p.lifetime = rand() % 1800 + 1800; // 0.5s > life > 1s
+        p.lifetime = 1.0f; // 0.5s > life > 1s
         p.isDead = false;
     }
+
+
 
         void ParticleSystem::update(f32 delta){
             for(size_t i = 0; i < _mParticles.size(); i++){
@@ -47,9 +62,7 @@ namespace Pesto
                     p.position.z += p.velocity.z * delta;
 
                     // TODO: process lifetime
-                    if(p.lifetime < 0){
-                        resetParticle(i);
-                    }
+                    //p.lifetime -= 0.01f;
 
                     // pour le batching
                     _positions[i] = p.position;
@@ -62,6 +75,7 @@ namespace Pesto
         for(size_t i = 0; i < _mParticles.size(); i++) {
             Particle& p = _mParticles[i];
             shader.SetUniform1f("particleSize", p.size);
+            shader.SetUniform4f("c", {1.0f, 0.5f, 0.2f, p.lifetime});
         }
     }
 }
