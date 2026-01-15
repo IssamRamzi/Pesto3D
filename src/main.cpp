@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 
 #include "imgui.h"
@@ -13,32 +14,47 @@
 #include "graphics/VertexArrays.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/IndexBuffer.h"
-#include "graphics/ParticleSystem.h"
+#include "particles/ParticleSystem.h"
 
 #include "math/GeoMa.h"
 
-const std::string SHADERS_PATH =  "../../assets/shaders/";
+#define DRAW_POINTS
+// #define DRAW_QUADS
+
+
+
+const std::string SHADERS_PATH =  "../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
 int main() {
+	int value;
+
+	std::cout << sizeof(int) << "  " << sizeof(int) << std::endl;
 
 	// TODO: refactor batching in class
 
 	Pesto::Window window;
 	Pesto::InputManager::Init(window.GetWindowAddr());
 	Pesto::Time::Init();
-	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 12.0});
-	camera.SetSpeed(1.0f);
+	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 50.0});
+	camera.SetSpeed(.05f);
 	camera.SetFov(65);
+
+
+	// pour le blending (alpha channel)
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 	f32 vertices[] = {
 		-0.5, -0.5,
-		0.5, -0.5, 
+		0.5, -0.5,
 		0.5, 0.5,
 		-0.5, 0.5f
 	};
+
+	f32 pointVertex[] = {0,0};
 
 	u32 indices[] = {0,1,2,2,3,0};
 
@@ -54,13 +70,24 @@ int main() {
 	Pesto::ParticleSystem particleSystem;
 
 	Pesto::VertexArrays vao;
+#ifdef DRAW_QUADS
 	Pesto::VertexBuffer vbo{vertices, 2, 8};
 	Pesto::IndexBuffer ebo(indices, 6);
 
-	// gpu pipeline
 	vao.Bind();
 	vao.AddBuffer(vbo, 0, 2, 2 * sizeof(float), (void*)0);
+
 	ebo.Bind();
+
+#else
+	Pesto::VertexBuffer vbo{pointVertex, 2, 2};
+	vao.Bind();
+	vao.AddBuffer(vbo, 0, 2, 2 * sizeof(float), (void*)0);
+#endif
+
+
+	// gpu pipeline
+
 
 	// batching
 	Pesto::VertexBuffer instanceVbo;
@@ -68,18 +95,20 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, sizeof(GeoMa::Vector3F), 0);
-	
-	glVertexAttribDivisor(1,1); // 
+
+	glVertexAttribDivisor(1,1); //
 	vao.Unbind();
 
 	particleSystem.setEmitterPosition(GeoMa::Vector3F(0.0f, 0.0f, 0.0f));
 
+	glEnable(GL_PROGRAM_POINT_SIZE);
+
 
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
-
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
+		std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 		Pesto::Time::Update();
 		Pesto::InputManager::Update();
 
@@ -87,9 +116,13 @@ int main() {
 		// input
 		// -----
 		// std::cout << "Before input" << std::endl;
-		camera.ProcessKeyboardInputs();
-    	camera.ProcessMouseInputs();
+		if(Pesto::InputManager::IsMouseClicked(Pesto::MouseButton::BUTTON_LEFT))
+			camera.ProcessMouseInputs();
 
+		if (Pesto::InputManager::IsKeyPressed(Pesto::Key::R))
+			particleSystem.resetAllParticles();
+
+		camera.ProcessKeyboardInputs();
 		processInput(window.GetWindowAddr());
 
 		// render
@@ -98,21 +131,35 @@ int main() {
 
 		// update l'instancing
 		instanceVbo.Bind();
-		glBufferSubData(
-					GL_ARRAY_BUFFER, 0, 
-                    particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), 
-                    particleSystem.getPositions().data()
-				
-				);
+		// glBufferSubData(
+		// 			GL_ARRAY_BUFFER, 0,
+        //             particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F),
+        //             particleSystem.getPositions().data()
 
-		glClearColor(0.2,0.3,0.3f, 1.0f);
+		// 		); // Le Cpu attend que le gpu efface les données pour remettre les nouvelles
+
+
+		// Le cpu transfere directement les données dans une place libre du GPU
+		glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), particleSystem.getPositions().data());
+
+
+		glClearColor(0.05,0.05,0.05f, 1.0f);
+
+		// eafea
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.EnableShader();
-		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 100));
+		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
+		particleSystem.render(shader);
 		vao.Bind();
+#ifdef DRAW_QUADS
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
-
+#else
+		glDrawArraysInstanced(GL_POINTS, 0, 1, particleSystem.getParticlesCount());
+#endif
+		std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+		std::cout << std::chrono::duration_cast<std::chrono::milliseconds> (t2 - t1).count() << std::endl;
 
 		// imgui
 		ImGui_ImplOpenGL3_NewFrame();
@@ -131,23 +178,28 @@ int main() {
 							camera.GetOrientation().y,
 							camera.GetOrientation().z);
 		}
+		if (ImGui::CollapsingHeader("Particles")) {
+			ImGui::Text("Count: %d", particleSystem.getParticlesCount());
+		}
 		ImGui::End();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
-		window.AddFpsTitle(std::to_string((u16)Pesto::Time::GetFPS()));
+		window.AddFpsTitle(std::to_string((u32)Pesto::Time::GetFPS()));
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	return 0;
 }
 
 void processInput(GLFWwindow *window) {
 	if (Pesto::InputManager::IsKeyPressed(Pesto::ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
 	}
 }
