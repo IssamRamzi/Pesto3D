@@ -17,16 +17,18 @@
 
 #include "math/GeoMa.h"
 
-// #define DRAW_POINTS
-#define DRAW_QUADS
+#define DRAW_POINTS
+// #define DRAW_QUADS
 
 
 
-const std::string SHADERS_PATH =  "../assets/shaders/";
+const std::string SHADERS_PATH =  "../../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
 int main() {
+	int value;
+	std::cout << sizeof(int) << "  " << sizeof(int) << std::endl;
 
 	// TODO: refactor batching in class
 
@@ -129,7 +131,7 @@ int main() {
 		// 		); // Le Cpu attend que le gpu efface les données pour remettre les nouvelles
 
 		
-		// Le cpu transfere directement les données dans une place libre du GPU
+		// Le cpu transfere directement les données dans une place libre du GPU   
 		glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW); 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), particleSystem.getPositions().data());
 
@@ -140,7 +142,7 @@ int main() {
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
 		//shader.SetUniform4f("Color", {1.0f, 0.5f, 0.2f, 1.0f * particleSystem.lifespan});
-		particleSystem.render(shader);
+		// particleSystem.render(shader);
 		// std::cout << "After sending size" << std::endl;
 		vao.Bind();
 #ifdef DRAW_QUADS

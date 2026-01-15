@@ -1,11 +1,10 @@
 #version 330 core
 layout(location = 0) in vec3 aPos;       
 layout(location = 1) in vec3 aInstancePos; 
+layout(location = 2) in float lifeTime; 
 
 uniform mat4 camMatrix;
 uniform float particleSize = 0.1;
-uniform vec4 c;
-out vec4 Color;
 
 struct Particle{
     vec3 position;
@@ -18,14 +17,15 @@ float rand(vec2 co){
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-//out vec3 vColor;
+uniform float l;
+out float lifetime;
 
 void main()
 {
+    lifetime = l;
     float r = rand(aInstancePos.xy);
     float g = rand(aInstancePos.yz + 10.0);
     float b = rand(aInstancePos.xz + 20.0);
-    Color = vec4(c);
 
     mat4 model = mat4(1.0);
 

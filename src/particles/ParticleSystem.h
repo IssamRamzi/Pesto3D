@@ -24,13 +24,13 @@ namespace Pesto {
         ParticleSystem(GeoMa::Vector3F position = GeoMa::Vector3F::ZERO);
         void resetParticle(std::size_t idx);
         void update(f32 delta);
-        void render(Shader shader);
+        void render(Shader& shader);
         void resetAllParticles();
         //void setLifeTime(float lifetime = 1.0f, size_t idx);
 
         void setEmitterPosition(GeoMa::Vector3F newPosition);
 
-        u16 getParticlesCount()const{return MAX_PARTICLES;}
+        u32 getParticlesCount()const{return MAX_PARTICLES;}
         // les getters pour l'instancing
 
         std::vector<GeoMa::Vector3F>& getPositions() {return _positions;}
