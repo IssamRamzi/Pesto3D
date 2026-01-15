@@ -7,7 +7,7 @@
 
 
 namespace Pesto {
-    #define MAX_PARTICLES 500000
+    #define MAX_PARTICLES 50000
 
     class ParticleSystem
     {
