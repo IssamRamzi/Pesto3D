@@ -22,7 +22,7 @@
 
 
 
-const std::string SHADERS_PATH =  "../../assets/shaders/";
+const std::string SHADERS_PATH =  "../assets/shaders/";
 
 void processInput(GLFWwindow *window);
 
@@ -39,6 +39,8 @@ int main() {
 	camera.SetSpeed(.05f);
 	camera.SetFov(65);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	f32 vertices[] = {
 		-0.5, -0.5,
@@ -136,14 +138,13 @@ int main() {
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), particleSystem.getPositions().data());
 
 
-		glClearColor(0.2,0.3,0.3f, 1.0f);
+		glClearColor(0.0,0.0,0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
 		//shader.SetUniform4f("Color", {1.0f, 0.5f, 0.2f, 1.0f * particleSystem.lifespan});
-		// particleSystem.render(shader);
-		// std::cout << "After sending size" << std::endl;
+		particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());

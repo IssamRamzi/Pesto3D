@@ -63,7 +63,9 @@ namespace Pesto
 
                     // TODO: process lifetime
                     p.lifetime -= delta;
-                    // std::cout << p.lifetime << "\n";
+                    if (p.lifetime < 0) {
+                        resetParticle(i);
+                    }
 
                     // pour le batching
                     _positions[i] = p.position;
@@ -75,7 +77,6 @@ namespace Pesto
     void ParticleSystem::render(Shader& shader) {
         for(size_t i = 0; i < _mParticles.size(); i++) {
             Particle& p = _mParticles[i];
-            // shader.SetUniform1f("particleSize", p.size);
             shader.SetUniform1f("l", p.lifetime);
         }
     }
