@@ -17,18 +17,23 @@
 
 #include "math/GeoMa.h"
 
-#define DRAW_POINTS
-// #define DRAW_QUADS
+//#define DRAW_POINTS
+#define DRAW_QUADS
 
 
 
 const std::string SHADERS_PATH =  "../assets/shaders/";
+bool drawImgui = true;
 
 void processInput(GLFWwindow *window);
 
 int main() {
-	int value;
-	std::cout << sizeof(int) << "  " << sizeof(int) << std::endl;
+	// args in gui
+	float attractionForce = 20.0f;
+	float attractionRadius = 20.0f;
+	GeoMa::Vector3F attractorPosition = GeoMa::Vector3F::ZERO;
+
+
 
 	// TODO: refactor batching in class
 
@@ -44,7 +49,7 @@ int main() {
 
 	f32 vertices[] = {
 		-0.5, -0.5,
-		0.5, -0.5, 
+		0.5, -0.5,
 		0.5, 0.5,
 		-0.5, 0.5f
 	};
@@ -82,7 +87,7 @@ int main() {
 
 
 	// gpu pipeline
-	
+
 
 	// batching
 	Pesto::VertexBuffer instanceVbo;
@@ -90,8 +95,8 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, sizeof(GeoMa::Vector3F), 0);
-	
-	glVertexAttribDivisor(1,1); // 
+
+	glVertexAttribDivisor(1,1); //
 	vao.Unbind();
 
 	particleSystem.setEmitterPosition(GeoMa::Vector3F(0.0f, 0.0f, 0.0f));
@@ -106,16 +111,20 @@ int main() {
 		Pesto::Time::Update();
 		Pesto::InputManager::Update();
 
+		// setters
+		particleSystem.setAttractionForce(attractionForce);
+		particleSystem.setAttractionRadius(attractionRadius);
+		particleSystem.setAttractionPosition(attractorPosition);
 		//ImGui::ShowDemoWindow();
 		// input
 		// -----
 		// std::cout << "Before input" << std::endl;
-		if(Pesto::InputManager::IsMouseClicked(Pesto::MouseButton::BUTTON_LEFT))
+		if(Pesto::InputManager::IsKeyDown(Pesto::Key::LCTRL))
 			camera.ProcessMouseInputs();
 
 		if (Pesto::InputManager::IsKeyPressed(Pesto::Key::R))
 			particleSystem.resetAllParticles();
-			
+
 		camera.ProcessKeyboardInputs();
 		processInput(window.GetWindowAddr());
 
@@ -126,15 +135,15 @@ int main() {
 		// update l'instancing
 		instanceVbo.Bind();
 		// glBufferSubData(
-		// 			GL_ARRAY_BUFFER, 0, 
-        //             particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), 
+		// 			GL_ARRAY_BUFFER, 0,
+        //             particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F),
         //             particleSystem.getPositions().data()
-				
+
 		// 		); // Le Cpu attend que le gpu efface les données pour remettre les nouvelles
 
-		
-		// Le cpu transfere directement les données dans une place libre du GPU   
-		glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW); 
+
+		// Le cpu transfere directement les données dans une place libre du GPU
+		glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), particleSystem.getPositions().data());
 
 
@@ -157,29 +166,36 @@ int main() {
 		ImGui::NewFrame();
 		ImGui::Begin("Settings");
 		ImGui::Text("Particle System parameters");
-		if (ImGui::CollapsingHeader("Camera")) {
-				ImGui::Text("FOV %d", camera.GetFov());
-				ImGui::Text("Position: (%.2f, %.2f, %.2f)",
-							camera.GetPosition().x,
-							camera.GetPosition().y,
-							camera.GetPosition().z);
-				ImGui::Text("Orientation: (%.2f, %.2f, %.2f)",
-							camera.GetOrientation().x,
-							camera.GetOrientation().y,
-							camera.GetOrientation().z);
-		}
 		if (ImGui::CollapsingHeader("Particles")) {
 			ImGui::Text("Count: %d", particleSystem.getParticlesCount());
 		}
+		if (ImGui::CollapsingHeader("Camera")) {
+			ImGui::Text("FOV %d", camera.GetFov());
+			ImGui::Text("Position: (%.2f, %.2f, %.2f)",
+				camera.GetPosition().x,
+				camera.GetPosition().y,
+				camera.GetPosition().z);
+			ImGui::Text("Orientation: (%.2f, %.2f, %.2f)",
+				camera.GetOrientation().x,
+				camera.GetOrientation().y,
+				camera.GetOrientation().z);
+
+		}
+		if (ImGui::CollapsingHeader("Forces")) {
+			ImGui::SliderFloat3("Attraction Position", &attractorPosition.x, -500.f, 500.f);
+			ImGui::SliderFloat("Attraction Force", &attractionForce, 0.f, 100.f);
+			ImGui::SliderFloat("Attraction Radius", &attractionRadius, 0.f, 250.f);
+		}
 		ImGui::End();
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		if (drawImgui)
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
-		window.AddFpsTitle(std::to_string((u16)Pesto::Time::GetFPS()));
+		window.AddFpsTitle(std::to_string((u32)Pesto::Time::GetFPS()));
 	}
 
 	ImGui_ImplOpenGL3_Shutdown();
@@ -191,5 +207,8 @@ int main() {
 void processInput(GLFWwindow *window) {
 	if (Pesto::InputManager::IsKeyPressed(Pesto::ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
+	}
+	if (Pesto::InputManager::IsKeyPressed(Pesto::Key::TAB)) {
+		drawImgui = !drawImgui;
 	}
 }

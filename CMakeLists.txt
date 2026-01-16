@@ -42,12 +42,15 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/core/Time.h
 		src/graphics/IndexBuffer.cpp
 		src/graphics/IndexBuffer.h
-		src/particles/ParticleSystem.cpp
-		src/particles/ParticleSystem.h
+        src/particles/ParticleSystem.cpp
+        src/particles/ParticleSystem.h
 		src/core/Camera.cpp
 		src/core/Camera.h
 		${IMGUI_SOURCES}
 		${IMGUI_HEADERS}
+		src/particles/ForceManager.h
+        src/particles/ForceManager.cpp
+		src/particles/Particle.h
 )
 
 

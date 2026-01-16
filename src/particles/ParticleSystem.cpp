@@ -6,14 +6,14 @@
 
 namespace Pesto
 {
-    ParticleSystem::ParticleSystem(GeoMa::Vector3F position) : _position(position){
+    ParticleSystem::ParticleSystem(GeoMa::Vector3F position, ForceManager attractor) : _position(position){
         _mParticles.resize(MAX_PARTICLES);
         _positions.resize(MAX_PARTICLES);
         _sizes.resize(MAX_PARTICLES);
-
         for(int i = 0 ; i < MAX_PARTICLES; i++){
             resetParticle(i);
         }
+        _attractor = attractor;
     }
 
     void ParticleSystem::resetAllParticles()
@@ -41,43 +41,43 @@ namespace Pesto
 
        p.position = _position + GeoMa::Vector3F(
             (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 100.f,
-            0.0f, 
-            0.0f
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 5.f,
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 10.f
         );
         p.velocity = GeoMa::Vector3F(velx, vely, 0.0f);
-        p.lifetime = 1.0f; // 0.5s > life > 1s
+        p.lifetime = 2.0f;
         p.isDead = false;
     }
 
 
 
         void ParticleSystem::update(f32 delta){
-            for(size_t i = 0; i < _mParticles.size(); i++){
+            for (size_t i = 0; i < _mParticles.size(); i++) {
                 Particle& p = _mParticles[i];
+                if (p.isDead) continue;
 
-                if(!p.isDead){
-                    p.velocity.y -= 9.8 * delta * 0.1;
-                    p.position.x += p.velocity.x * delta;
-                    p.position.y += p.velocity.y * delta;
-                    p.position.z += p.velocity.z * delta;
+                _attractor.attract(p, delta);
+                _attractor.doFriction(p, 1);
 
-                    // TODO: process lifetime
-                    p.lifetime -= delta;
-                    if (p.lifetime < 0) {
-                        resetParticle(i);
-                    }
+                // gravity
+                p.velocity.y -= 9.8f * delta * 0.1f;
 
-                    // pour le batching
-                    _positions[i] = p.position;
-                    _sizes[i] = p.size;
-                }
+                p.position = p.position + p.velocity * delta;
+
+                p.lifetime -= delta;
+                // if (p.lifetime <= 0.0f)
+                    // resetParticle(i);
+
+                _positions[i] = p.position;
+                _sizes[i] = p.size;
             }
         }
 
     void ParticleSystem::render(Shader& shader) {
         for(size_t i = 0; i < _mParticles.size(); i++) {
             Particle& p = _mParticles[i];
-            shader.SetUniform1f("l", p.lifetime);
+            // shader.SetUniform1f("l", p.lifetime); // one uniform call costs 70 to 120 fps
+            shader.SetUniform1f("particleSize", p.size);
         }
     }
 }

@@ -4,7 +4,6 @@ layout(location = 1) in vec3 aInstancePos;
 layout(location = 2) in float lifeTime; 
 
 uniform mat4 camMatrix;
-uniform float particleSize = 0.1;
 
 struct Particle{
     vec3 position;
@@ -19,6 +18,7 @@ float rand(vec2 co){
 
 uniform float l;
 out float lifetime;
+uniform float particleSize;
 
 void main()
 {
