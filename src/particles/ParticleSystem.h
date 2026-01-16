@@ -3,25 +3,22 @@
 #include "../globals.h"
 #include <vector>
 
+#include "ForceManager.h"
 #include "../graphics/Shader.h"
-
+#include "Particle.h"
 
 namespace Pesto {
-    #define MAX_PARTICLES 50000
+    #define MAX_PARTICLES 100000
+
+
+
 
     class ParticleSystem
     {
-        struct Particle
-        {
-            GeoMa::Vector3F position;
-            GeoMa::Vector3F velocity;
-            float lifetime = 5.0f;
-            float size = 0.2f;
-            bool isDead = false;
-        };
+
 
     public:
-        ParticleSystem(GeoMa::Vector3F position = GeoMa::Vector3F::ZERO);
+        ParticleSystem(GeoMa::Vector3F position = GeoMa::Vector3F::ZERO, ForceManager attractor = ForceManager());
         void resetParticle(std::size_t idx);
         void update(f32 delta);
         void render(Shader& shader);
@@ -29,12 +26,19 @@ namespace Pesto {
         //void setLifeTime(float lifetime = 1.0f, size_t idx);
 
         void setEmitterPosition(GeoMa::Vector3F newPosition);
+        void setAttractionForce(float attractionForce){_attractor.setAttractorForce(attractionForce);}
+        void setAttractionRadius(float attractionRadius){_attractor.setAttractorRadius(attractionRadius);}
+        void setAttractionPosition(GeoMa::Vector3F attractionPosition){_attractor.setAttractorPosition(attractionPosition);}
 
         u32 getParticlesCount()const{return MAX_PARTICLES;}
+
+        void attract(size_t idx, float dt);
+
         // les getters pour l'instancing
 
         std::vector<GeoMa::Vector3F>& getPositions() {return _positions;}
         std::vector<GeoMa::Vector3F>& getSizes() {return _sizes;}
+
 
     private:
     
@@ -44,6 +48,10 @@ namespace Pesto {
         // pour l'instancing
         std::vector<GeoMa::Vector3F> _positions;
         std::vector<GeoMa::Vector3F> _sizes;
+
+        ForceManager _attractor;
+
+
 
     };
 }
