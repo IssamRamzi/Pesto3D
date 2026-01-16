@@ -10,7 +10,7 @@ namespace Pesto{
 IndexBuffer::IndexBuffer(GLuint *indices, unsigned int count) : m_count(count){
     glGenBuffers(1, &m_bufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count, indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), indices, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer(){

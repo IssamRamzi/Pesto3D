@@ -201,8 +201,8 @@ template<class Type>
 Vector2<Type> Vector2<Type>::LEFT{ -1, 0 };
 
 using Vector2I = Vector2<int>;
-using Vector2F = Vector2<double>;
+using Vector2F = Vector2<float>;
 using Point2I = Vector2<int>;
-using Point2F = Vector2<double>;
+using Point2F = Vector2<float>;
 
 }

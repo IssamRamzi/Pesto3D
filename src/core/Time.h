@@ -22,6 +22,9 @@ namespace Pesto {
         static float GetDeltaTime() { return m_deltaTime; }
         static float GetFPS()       { return m_fps; }
     };
+
 }
+
+
 
 #endif //PESTO3D_TIME_H

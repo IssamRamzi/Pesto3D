@@ -104,9 +104,12 @@ public:
             for(int j = 0; i < 3; j++){
                 Type value = 0;
                 for(int k = 0; k < 3; k++){
+                    value += (*this)(i, k) * matrix(k,j);
                 }
+                res(i,j) = value;
             }
         }
+        return res;
     }
     
     void                        ToZero() {
@@ -220,7 +223,7 @@ std::ostream& operator<<(std::ostream& os, Matrix3<Type> mat){
     return os;
 }
 
-using Matrix3F = Matrix3<double>;
+using Matrix3F = Matrix3<float>;
 using Matrix3I = Matrix3<int>;
 
 }

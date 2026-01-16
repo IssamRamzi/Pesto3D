@@ -34,6 +34,7 @@ namespace Pesto {
         void        SetUniform2i(const GLchar* name, GeoMa::Vector2I vec);
         void        SetUniform3i(const GLchar* name, GeoMa::Vector3I vec);
         void        SetUniform4i(const GLchar* name, GeoMa::Vector4I vec);
+        void        SetUniformMat4(const GLchar* name, GeoMa::Matrix4F vec);
 
     };
 }

@@ -157,4 +157,14 @@ namespace Pesto {
         GLint location = GetUniformLoc(name);
         glUniform4i(location, vec.x, vec.y, vec.z, vec.t);
     }
+
+    void Shader::SetUniformMat4(const GLchar* name, GeoMa::Matrix4F mat) {
+        GLint location = GetUniformLoc(name);
+        float floatData[16];
+        for (int i = 0; i < 16; i++) {
+            floatData[i] = static_cast<float>(mat[i]);
+        }
+        glUniformMatrix4fv(location, 1, GL_FALSE, floatData);
+    }
+
 }
