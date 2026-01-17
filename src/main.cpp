@@ -17,10 +17,11 @@
 
 #include "math/GeoMa.h"
 
+//osc
+#include "osc/OscReceiver.h"
+
 //#define DRAW_POINTS
 #define DRAW_QUADS
-
-
 
 const std::string SHADERS_PATH =  "../assets/shaders/";
 bool drawImgui = true;
@@ -32,8 +33,6 @@ int main() {
 	float attractionForce = 20.0f;
 	float attractionRadius = 20.0f;
 	GeoMa::Vector3F attractorPosition = GeoMa::Vector3F::ZERO;
-
-
 
 	// TODO: refactor batching in class
 
@@ -104,6 +103,8 @@ int main() {
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
 
+	OscListener osc;
+	osc.startListening(7000);
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
 	// render loop
 	// -----------

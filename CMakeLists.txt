@@ -9,6 +9,7 @@ set(OSCPACK_CORE
 	${OSCPACK_DIR}/osc/OscReceivedElements.cpp
 	${OSCPACK_DIR}/osc/OscTypes.cpp
 	${OSCPACK_DIR}/ip/IpEndpointName.cpp
+	${OSCPACK_DIR}/osc/OscReceiver.cpp
 )
 
 if(WIN32)
