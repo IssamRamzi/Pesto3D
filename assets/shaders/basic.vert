@@ -1,28 +1,29 @@
 #version 330 core
 layout(location = 0) in vec3 aPos;       
-layout(location = 1) in vec3 aInstancePos; 
-layout(location = 2) in float lifeTime; 
+layout(location = 1) in vec3 aInstancePos;
+layout(location = 2) in float aparticleSize;
 
 uniform mat4 camMatrix;
 
-struct Particle{
+struct Particle
+{
     vec3 position;
     vec3 velocity;
     vec3 size;
 };
 
 // https://stackoverflow.com/questions/4200224/random-noise-functions-for-glsl
-float rand(vec2 co){
+float rand(vec2 co)
+{
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-uniform float l;
-out float lifetime;
-uniform float particleSize;
+//uniform float l;
+//uniform float particleSize;
 
 void main()
 {
-    lifetime = l;
+    //lifetime = l;
     float r = rand(aInstancePos.xy);
     float g = rand(aInstancePos.yz + 10.0);
     float b = rand(aInstancePos.xz + 20.0);
@@ -30,9 +31,9 @@ void main()
     mat4 model = mat4(1.0);
 
     // scale
-    model[0][0] = particleSize;
-    model[1][1] = particleSize;
-    model[2][2] = particleSize;
+    model[0][0] = aparticleSize;
+    model[1][1] = aparticleSize;
+    model[2][2] = aparticleSize;
 
     // transla
     model[3][0] = aInstancePos.x;
