@@ -11,7 +11,9 @@ public:
     ~Camera();
 
     GeoMa::Matrix4F   CalculateMatrix(float nearPlane, float farPlane);
-    
+    GeoMa::Matrix4F   GetViewMatrix() const;
+    GeoMa::Matrix4F   GetProjectionMatrix(float nearPlane, float farPlane) const;
+
     void              ProcessKeyboardInputs();
     void              ProcessMouseInputs();
     void              ProcessMouseScroll();
