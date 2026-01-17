@@ -36,6 +36,8 @@ int main() {
 	float attractionRadius = 20.0f;
 	GeoMa::Vector3F attractorPosition = GeoMa::Vector3F::ZERO;
 
+	bool shouldUseOscValues = false;
+
 	// TODO: refactor batching in class
 
 	Pesto::Window window;
@@ -48,7 +50,6 @@ int main() {
 	camera.SetSpeed(.05f);
 	camera.SetFov(65);
 
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	f32 vertices[] = {
@@ -103,13 +104,28 @@ int main() {
 	glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, sizeof(GeoMa::Vector3F), 0);
 
 	glVertexAttribDivisor(1,1); //
-	vao.Unbind();
 
 	particleSystem.setEmitterPosition(GeoMa::Vector3F(0.0f, 0.0f, 0.0f));
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
+	unsigned int sizeVBO;
+	glGenBuffers(1, &sizeVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, sizeVBO);
+	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), static_cast<void *>(nullptr));
+	glVertexAttribDivisor(2, 1);
+	//lifetimes
+	unsigned int lifeVBO;
+	glGenBuffers(1, &lifeVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
+	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), static_cast<void *>(nullptr));
+	glVertexAttribDivisor(3, 1);
 
+	vao.Unbind();
 	OscListener osc;
 	osc.startListening(7000);
 
@@ -125,13 +141,22 @@ int main() {
 		Pesto::InputManager::Update();
 
 		// setters
-		particleSystem.setAttractionForce(attractionForce);
-		particleSystem.setAttractionRadius(osc._radius);
-		GeoMa::Vector3F posFromOsc;
-		posFromOsc.x = (osc._attractorX * 80.0f) - 40.0f;
-		posFromOsc.y = (osc._attractorY * 60.0f) - 30.0f;
-		posFromOsc.z = 0.0f;
-		particleSystem.setAttractionPosition(posFromOsc);
+
+		if (shouldUseOscValues) {
+			particleSystem.setAttractionForce(attractionForce);
+			particleSystem.setAttractionRadius(osc._radius);
+			GeoMa::Vector3F posFromOsc;
+			posFromOsc.x = (osc._attractorX * 80.0f) - 40.0f;
+			posFromOsc.y = (osc._attractorY * 60.0f) - 30.0f;
+			posFromOsc.z = 0.0f;
+			particleSystem.setAttractionPosition(posFromOsc);
+		} else {
+			particleSystem.setAttractionForce(attractionForce);
+			particleSystem.setAttractionRadius(attractionRadius);
+			particleSystem.setAttractionPosition(attractorPosition);
+		}
+
+
 		//ImGui::ShowDemoWindow();
 		// input
 		// -----
@@ -160,8 +185,18 @@ int main() {
 
 
 		// Le cpu transfere directement les données dans une place libre du GPU
+		//positions
 		glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(GeoMa::Vector3F), particleSystem.getPositions().data());
+		//sizes
+		glBindBuffer(GL_ARRAY_BUFFER, sizeVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(float),
+			particleSystem.getSizes().data());
+		//lifetimes
+		glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(float),
+			particleSystem.getLifetimes().data());
+		glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
 
 
 		glClearColor(0.0,0.0,0.0f, 1.0f);
@@ -173,9 +208,13 @@ int main() {
 		// particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
+		glEnable(GL_BLEND);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());
+		glDisable(GL_BLEND);
 #else
+		glEnable(GL_BLEND);
 		glDrawArraysInstanced(GL_POINTS, 0, 1, particleSystem.getParticlesCount());
+		glDisable(GL_BLEND);
 #endif
 		// imgui
 		ImGui_ImplOpenGL3_NewFrame();
@@ -202,6 +241,9 @@ int main() {
 			ImGui::SliderFloat3("Attraction Position", &attractorPosition.x, -50.f, 50.f);
 			ImGui::SliderFloat("Attraction Force", &attractionForce, 0.f, 100.f);
 			ImGui::SliderFloat("Attraction Radius", &attractionRadius, 0.f, 250.f);
+		}
+		if (ImGui::CollapsingHeader("OSC")) {
+			ImGui::Checkbox("Use OSC", &shouldUseOscValues);
 		}
 		ImGui::End();
 		ImGui::Render();
