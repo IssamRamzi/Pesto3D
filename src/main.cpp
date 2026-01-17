@@ -109,6 +109,14 @@ int main() {
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), static_cast<void *>(nullptr));
 	glVertexAttribDivisor(2, 1);
+	//lifetimes
+	unsigned int lifeVBO;
+	glGenBuffers(1, &lifeVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
+	glBufferData(GL_ARRAY_BUFFER, particleSystem.getParticlesCount() * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), static_cast<void *>(nullptr));
+	glVertexAttribDivisor(3, 1);
 
 	vao.Unbind();
 	OscListener osc;
@@ -172,6 +180,12 @@ int main() {
 		glBindBuffer(GL_ARRAY_BUFFER, sizeVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(float),
 			particleSystem.getSizes().data());
+		//lifetimes
+		glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSystem.getParticlesCount() * sizeof(float),
+			particleSystem.getLifetimes().data());
+		glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
+
 
 		glClearColor(0.0,0.0,0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

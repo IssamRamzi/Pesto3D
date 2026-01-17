@@ -2,6 +2,7 @@
 layout(location = 0) in vec3 aPos;       
 layout(location = 1) in vec3 aInstancePos;
 layout(location = 2) in float aparticleSize;
+layout(location = 3) in float aLifetime;
 
 uniform mat4 camMatrix;
 
@@ -21,9 +22,12 @@ float rand(vec2 co)
 //uniform float l;
 //uniform float particleSize;
 
+out float vLife;
+
 void main()
 {
     //lifetime = l;
+    vLife = aLifetime;
     float r = rand(aInstancePos.xy);
     float g = rand(aInstancePos.yz + 10.0);
     float b = rand(aInstancePos.xz + 20.0);
