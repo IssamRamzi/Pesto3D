@@ -17,16 +17,23 @@ void OscListener::startListening(int port)
 void OscListener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName &remoteEndpoint)
 {
     (void)remoteEndpoint;
+    osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
     try {
-        if (std::strcmp(m.AddressPattern(), "/test1") == 0) {
-            osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
-            bool a1;
-            osc::int32 a2;
-            float a3;
-            const char *a4;
-            args >> a1 >> a2 >> a3 >> a4 >> osc::EndMessage;
+        if (std::strcmp(m.AddressPattern(), "/attractor/pos") == 0) {
+            float x;
+            float y;
+            float z;
+            args >> x >> y >> z >> osc::EndMessage;
+            _attractorX = x;
+            _attractorY = y;
+            _attractorZ = z; //-> for now this does nothing since depth is a bitch to implement in mediapipe
+
             std::cout << "Received message test/1 with arguments :"
-            << a1 << " " << a2 << " " << a3 << " " << a4 << std::endl;
+            << x << " " << y << " " << z << " "<< std::endl;
+        } else if (std::strcmp(m.AddressPattern(), "/attractor/radius") == 0) {
+            float radius;
+            args >> radius >> osc::EndMessage;
+            _radius = radius;
         }
     } catch (osc::Exception& e) {
         std::cout << "error while parsing message:"

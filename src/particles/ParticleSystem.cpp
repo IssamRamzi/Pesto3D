@@ -57,7 +57,8 @@ namespace Pesto
                 if (p.isDead) continue;
 
                 _attractor.attract(p, delta);
-                _attractor.doFriction(p, 1);
+                //
+                _attractor.doFriction(p, 0.98);
 
                 // gravity
                 p.velocity.y -= 9.8f * delta * 0.1f;

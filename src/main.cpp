@@ -114,8 +114,12 @@ int main() {
 
 		// setters
 		particleSystem.setAttractionForce(attractionForce);
-		particleSystem.setAttractionRadius(attractionRadius);
-		particleSystem.setAttractionPosition(attractorPosition);
+		particleSystem.setAttractionRadius(osc._radius);
+		GeoMa::Vector3F posFromOsc;
+		posFromOsc.x = (osc._attractorX * 80.0f) - 40.0f;
+		posFromOsc.y = (osc._attractorY * 60.0f) - 30.0f;
+		posFromOsc.z = 0.0f;
+		particleSystem.setAttractionPosition(posFromOsc);
 		//ImGui::ShowDemoWindow();
 		// input
 		// -----
@@ -183,7 +187,7 @@ int main() {
 
 		}
 		if (ImGui::CollapsingHeader("Forces")) {
-			ImGui::SliderFloat3("Attraction Position", &attractorPosition.x, -500.f, 500.f);
+			ImGui::SliderFloat3("Attraction Position", &attractorPosition.x, -50.f, 50.f);
 			ImGui::SliderFloat("Attraction Force", &attractionForce, 0.f, 100.f);
 			ImGui::SliderFloat("Attraction Radius", &attractionRadius, 0.f, 250.f);
 		}
