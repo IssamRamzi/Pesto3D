@@ -18,7 +18,9 @@
 #include "math/GeoMa.h"
 
 //osc
+#include "graphics/CubeMap.h"
 #include "osc/OscReceiver.h"
+
 
 //#define DRAW_POINTS
 #define DRAW_QUADS
@@ -39,6 +41,9 @@ int main() {
 	Pesto::Window window;
 	Pesto::InputManager::Init(window.GetWindowAddr());
 	Pesto::Time::Init();
+
+	float nearPlane = 0.1f, farPlane = 300.f;
+
 	Pesto::Camera camera(&window, GeoMa::Vector3F{0.0, 0.0, 50.0});
 	camera.SetSpeed(.05f);
 	camera.SetFov(65);
@@ -68,6 +73,9 @@ int main() {
 
 	Pesto::ParticleSystem particleSystem;
 
+
+	// gpu pipeline
+
 	Pesto::VertexArrays vao;
 #ifdef DRAW_QUADS
 	Pesto::VertexBuffer vbo{vertices, 2, 8};
@@ -85,7 +93,6 @@ int main() {
 #endif
 
 
-	// gpu pipeline
 
 
 	// batching
@@ -105,7 +112,12 @@ int main() {
 
 	OscListener osc;
 	osc.startListening(7000);
+
+	Pesto::CubeMap cubemap;
+	cubemap.Init();
+
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
+	Pesto::Shader cubemapShader{(SHADERS_PATH + "skybox.vert").c_str(), (SHADERS_PATH + "skybox.frag").c_str()};
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
@@ -154,11 +166,11 @@ int main() {
 
 		glClearColor(0.0,0.0,0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
+		cubemap.Draw(cubemapShader, GeoMa::Matrix4F(camera.GetViewMatrix(), true), GeoMa::Matrix4F(camera.GetProjectionMatrix(nearPlane, farPlane)));
 		shader.EnableShader();
-		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
+		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(nearPlane, farPlane));
 		//shader.SetUniform4f("Color", {1.0f, 0.5f, 0.2f, 1.0f * particleSystem.lifespan});
-		particleSystem.render(shader);
+		// particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particleSystem.getParticlesCount());

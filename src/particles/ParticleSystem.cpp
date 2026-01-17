@@ -78,7 +78,7 @@ namespace Pesto
         for(size_t i = 0; i < _mParticles.size(); i++) {
             Particle& p = _mParticles[i];
             // shader.SetUniform1f("l", p.lifetime); // one uniform call costs 70 to 120 fps
-            shader.SetUniform1f("particleSize", p.size);
+            // shader.SetUniform1f("particleSize", p.size);
         }
     }
 }

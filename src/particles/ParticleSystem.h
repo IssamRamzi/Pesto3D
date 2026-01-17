@@ -8,7 +8,7 @@
 #include "Particle.h"
 
 namespace Pesto {
-    #define MAX_PARTICLES 200000
+    #define MAX_PARTICLES 100000
 
 
 

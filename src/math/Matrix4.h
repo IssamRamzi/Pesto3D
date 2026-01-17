@@ -47,6 +47,18 @@ public:
         }
     }
 
+    Matrix4(const Matrix4<Type>& other, bool removeTranslation)
+    {
+        memcpy(data, other.data, 16 * sizeof(Type));
+
+        if (removeTranslation)
+        {
+            data[12] = 0; // Tx
+            data[13] = 0; // Ty
+            data[14] = 0; // Tz
+        }
+    }
+
     Type operator[](unsigned int index) const{
         if(index < 16)
             return data[index];

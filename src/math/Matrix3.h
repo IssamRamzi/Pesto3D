@@ -1,4 +1,6 @@
 #include <memory>
+
+#include "Matrix4.h"
 #include "Vector3.h"
 #include "Utils.h"
 
@@ -42,6 +44,21 @@ public:
             data[6] = v3.x, data[7] = v3.y, data[8] = v3.z;
         }
 
+    }
+
+    Matrix3(Matrix4<Type>& mat4)
+    {
+        data[0] = mat4(0,0);
+        data[1] = mat4(1,0);
+        data[2] = mat4(2,0);
+
+        data[3] = mat4(0,1);
+        data[4] = mat4(1,1);
+        data[5] = mat4(2,1);
+
+        data[6] = mat4(0,2);
+        data[7] = mat4(1,2);
+        data[8] = mat4(2,2);
     }
 
     Type operator[](unsigned int index) const{

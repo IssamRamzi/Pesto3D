@@ -17,6 +17,7 @@ public:
     std::atomic<float> _attractorY{0.0f};
     std::atomic<float> _attractorZ{0.0f};
     std::atomic<float> _radius;
+    std::atomic<float> _force;
 
     void startListening(int port);
 

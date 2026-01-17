@@ -18,7 +18,7 @@ float rand(vec2 co){
 
 uniform float l;
 out float lifetime;
-uniform float particleSize;
+//uniform float particleSize;
 
 void main()
 {
@@ -28,7 +28,7 @@ void main()
     float b = rand(aInstancePos.xz + 20.0);
 
     mat4 model = mat4(1.0);
-
+    float particleSize = 0.1;
     // scale
     model[0][0] = particleSize;
     model[1][1] = particleSize;
