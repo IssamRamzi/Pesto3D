@@ -34,6 +34,10 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
             float radius;
             args >> radius >> osc::EndMessage;
             _radius = radius;
+        }else if (std::strcmp(m.AddressPattern(), "/attractor/amplitude") == 0) {
+            float amplitude;
+            args >> amplitude >> osc::EndMessage;
+            //_force = amplitude;
         }
     } catch (osc::Exception& e) {
         std::cout << "error while parsing message:"

@@ -27,6 +27,8 @@ file(GLOB_RECURSE SOURCE_FILES
 	${CMAKE_SOURCE_DIR}/src/*.cpp
 )
 
+list(FILTER SOURCE_FILES EXCLUDE REGEX ".*src/network/.*")
+
 file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.h
 	${CMAKE_SOURCE_DIR}/src/*.hpp
@@ -105,7 +107,8 @@ target_include_directories(${PROJECT_NAME}
 	PUBLIC ${GLAD_ROOT_DIR}/include/glad
 	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui
 	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui/backends
-		PUBLIC ${OSCPACK_DIR}
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/stb
+	PUBLIC ${OSCPACK_DIR}
 )
 
 #		Include Files from Outside the Workspace Folder -> Like Vulkan SDK
