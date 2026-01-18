@@ -39,13 +39,14 @@ namespace Pesto
         float velx = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 2.0f;
         float vely = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * SPEED;
 
+        //TODO: Reset particles around the attractor
        p.position = _position + GeoMa::Vector3F(
             (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 100.f,
             (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 5.f,
             (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) * 10.f
         );
         p.velocity = GeoMa::Vector3F(velx, vely, 0.0f);
-        p.lifetime = (5.0f - 2.0f) * ((((float) rand()) / (float) RAND_MAX)) + 2.0f;
+        p.lifetime = (15.0f - 2.0f) * ((((float) rand()) / (float) RAND_MAX)) + 2.0f;
         //p.lifetime = 2.0f;
         p.isDead = false;
     }

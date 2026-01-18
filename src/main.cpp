@@ -79,14 +79,57 @@ int main() {
 
 	ebo.Bind();
 
+	//postprocess
+	float quadVertices[] = {
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+
+	unsigned int quadVAO, quadVBO;
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	unsigned int fbo;
+	glGenFramebuffers(1, &fbo);
+	unsigned int textureColorBuffer;
+	glGenTextures(1, &textureColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1600, 900, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	unsigned int rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
+	//attach
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR[Framebuffer] : framebuffer not complete" << std::endl;
+
+	vao.Bind();
 #else
 	Pesto::VertexBuffer vbo{pointVertex, 2, 2};
 	vao.Bind();
 	vao.AddBuffer(vbo, 0, 2, 2 * sizeof(float), (void*)0);
 #endif
 
-
 	// gpu pipeline
+
+
 
 
 	// batching
@@ -96,10 +139,9 @@ int main() {
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, sizeof(GeoMa::Vector3F), 0);
 
-	glVertexAttribDivisor(1,1); //
+	glVertexAttribDivisor(1,1);
 
 	particleSystem.setEmitterPosition(GeoMa::Vector3F(0.0f, 0.0f, 0.0f));
-
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
 	unsigned int sizeVBO;
@@ -122,6 +164,7 @@ int main() {
 	OscListener osc;
 	osc.startListening(7000);
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
+	Pesto::Shader screenShader{(SHADERS_PATH + "screen.vert").c_str(), (SHADERS_PATH + "screen.frag").c_str()};
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window.GetWindowAddr())) {
@@ -158,6 +201,10 @@ int main() {
 		camera.ProcessKeyboardInputs();
 		processInput(window.GetWindowAddr());
 
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.0,0.0,0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// render
 		// ------
 		particleSystem.update(Pesto::Time::GetDeltaTime());
@@ -187,8 +234,7 @@ int main() {
 		glBindBuffer(GL_ARRAY_BUFFER, lifeVBO);
 
 
-		glClearColor(0.0,0.0,0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+
 
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
@@ -204,6 +250,16 @@ int main() {
 		glDrawArraysInstanced(GL_POINTS, 0, 1, particleSystem.getParticlesCount());
 		glDisable(GL_BLEND);
 #endif
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		screenShader.EnableShader();
+		glBindVertexArray(quadVAO);
+		glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
 		// imgui
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -237,7 +293,6 @@ int main() {
 		ImGui::Render();
 		if (drawImgui)
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
