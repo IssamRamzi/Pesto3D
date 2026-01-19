@@ -35,6 +35,7 @@ namespace Pesto {
         std::vector<GeoMa::Vector3F>& getSizes() {return _sizes;}
         std::vector<float>& getLifetimes() {return _lifetimes;}
 
+
     private:
     
         std::vector<Particle> _mParticles;
@@ -44,6 +45,10 @@ namespace Pesto {
         std::vector<GeoMa::Vector3F> _sizes;
         std::vector<float> _lifetimes;
         ForceManager _attractor;
+
+        ForceManager _attractor;
+
+
 
     };
 }
