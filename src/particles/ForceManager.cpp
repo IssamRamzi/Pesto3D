@@ -9,15 +9,11 @@ namespace Pesto {
     void ForceManager::attract(Particle &p, float dt) {
 
         GeoMa::Vector3F toAttractor = _attractionPosition - p.position;
-
         float distance = toAttractor.Length();
-
-
         GeoMa::Vector3F dir = toAttractor.Normalized();
 
-
         if (distance < _attractionRadius) {
-            float force = _attractionForce * (1.0f - distance / _attractionRadius);
+            const float force = _attractionForce * (1.0f - distance / _attractionRadius);
             p.velocity = p.velocity + dir * force * dt;
         }
     }

@@ -2,12 +2,32 @@ cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 project(Pesto3D)
 
-# Add all Source Files
+set(OSCPACK_DIR ${CMAKE_SOURCE_DIR}/src/network)
+set(OSCPACK_CORE
+	${OSCPACK_DIR}/osc/OscOutboundPacketStream.cpp
+	${OSCPACK_DIR}/osc/OscReceivedElements.cpp
+	${OSCPACK_DIR}/osc/OscTypes.cpp
+	${OSCPACK_DIR}/ip/IpEndpointName.cpp
+	${OSCPACK_DIR}/osc/OscReceiver.cpp
+)
+
+if(WIN32)
+	set(OSCPACK_NET
+		${OSCPACK_DIR}/ip/win32/UdpSocket.cpp
+		${OSCPACK_DIR}/ip/win32/NetworkingUtils.cpp)
+	set(OSC_LIBS ws2_32 winmm)
+else()
+	set(OSCPACK_NET
+		${OSCPACK_DIR}/ip/posix/UdpSocket.cpp
+		${OSCPACK_DIR}/ip/posix/NetworkingUtils.cpp)
+endif()
+
 file(GLOB_RECURSE SOURCE_FILES
 	${CMAKE_SOURCE_DIR}/src/*.cpp
 )
 
-# Add all Header Files
+list(FILTER SOURCE_FILES EXCLUDE REGEX ".*src/network/.*")
+
 file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.h
 	${CMAKE_SOURCE_DIR}/src/*.hpp
@@ -18,13 +38,14 @@ file(GLOB IMGUI_SOURCES
 		"external/imgui/backends/imgui_impl_glfw.cpp"
 		"external/imgui/backends/imgui_impl_opengl3.cpp"
 )
+
 file(GLOB IMGUI_HEADERS
 		"external/imgui/*.h"
 		"external/imgui/backends/imgui_impl_glfw.h"
 		"external/imgui/backends/imgui_impl_opengl3.h"
 )
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${OSCPACK_CORE} ${OSCPACK_NET}
 		src/graphics/VertexArrays.cpp
 		src/graphics/VertexArrays.h
 		src/core/Window.cpp
@@ -53,13 +74,12 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES}
 		src/particles/Particle.h
 )
 
-
 # Find the Required Packages (if Any -> OpenGL/Vulkan or Any)
 find_package(OpenGL REQUIRED)
 
 # Variable for the Libs to add to the Linkers
 if (WIN32)
-	set(LIBS glfw opengl32 glad)
+	set(LIBS glfw opengl32 glad ${OSC_LIBS})
 elseif(APPLE)
     set(LIBS glfw glad "-framework OpenGL" "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 elseif (UNIX)
@@ -67,6 +87,7 @@ elseif (UNIX)
 
 endif ()
 
+set_property(TARGET Pesto3D PROPERTY CXX_STANDARD 17)
 # Variables for Paths of External Libraries
 set(GLFW_ROOT_DIR external/glfw)
 set(GLAD_ROOT_DIR external/glad)
@@ -86,6 +107,8 @@ target_include_directories(${PROJECT_NAME}
 	PUBLIC ${GLAD_ROOT_DIR}/include/glad
 	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui
 	PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui/backends
+	PUBLIC ${CMAKE_SOURCE_DIR}/external/stb
+	PUBLIC ${OSCPACK_DIR}
 )
 
 #		Include Files from Outside the Workspace Folder -> Like Vulkan SDK

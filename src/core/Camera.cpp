@@ -35,6 +35,28 @@ Matrix4F Camera::CalculateMatrix(float nearPlane, float farPlane) {
     return projection * view;// TOUJOURS PROJ * VIEW
 }
 
+Matrix4F Camera::GetViewMatrix() const
+{
+    return Matrix4F::LookAt(
+        m_position,
+        m_position + m_orientation,
+        m_up
+    );
+}
+
+Matrix4F Camera::GetProjectionMatrix(float nearPlane, float farPlane) const
+{
+    float aspect = (float)m_window->GetWindowWidth() /
+                   (float)m_window->GetWindowHeight();
+
+    return Matrix4F::Perspective(
+        (double)ToRadians(m_fov),
+        (double)aspect,
+        (double)nearPlane,
+        (double)farPlane
+    );
+}
+
 void Camera::ProcessKeyboardInputs() {
     if (InputManager::IsKeyDown(LSHIFT)) {
         m_speed = m_initialSpeed * 3.0;
