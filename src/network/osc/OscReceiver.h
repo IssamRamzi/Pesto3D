@@ -8,7 +8,7 @@
 #include <thread>
 #include <atomic>
 
-#define PORT 7000
+#define PORT 3333
 
 class OscListener : public osc::OscPacketListener
 {
@@ -17,6 +17,7 @@ public:
     std::atomic<float> _attractorY{0.0f};
     std::atomic<float> _attractorZ{0.0f};
     std::atomic<float> _radius{0.0f};
+    std::atomic<float> _force{0.0f};
 
     void startListening(int port);
 

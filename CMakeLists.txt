@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 project(Pesto3D)
 
 set(OSCPACK_DIR ${CMAKE_SOURCE_DIR}/src/network)
-
 set(OSCPACK_CORE
 	${OSCPACK_DIR}/osc/OscOutboundPacketStream.cpp
 	${OSCPACK_DIR}/osc/OscReceivedElements.cpp
@@ -88,6 +87,7 @@ elseif (UNIX)
 
 endif ()
 
+set_property(TARGET Pesto3D PROPERTY CXX_STANDARD 17)
 # Variables for Paths of External Libraries
 set(GLFW_ROOT_DIR external/glfw)
 set(GLAD_ROOT_DIR external/glad)

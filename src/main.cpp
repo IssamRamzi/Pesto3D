@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
@@ -162,7 +163,7 @@ int main() {
 
 	vao.Unbind();
 	OscListener osc;
-	osc.startListening(7000);
+	osc.startListening(3333);
 	Pesto::Shader shader{(SHADERS_PATH + "basic.vert").c_str(), (SHADERS_PATH + "basic.frag").c_str()};
 	Pesto::Shader screenShader{(SHADERS_PATH + "screen.vert").c_str(), (SHADERS_PATH + "screen.frag").c_str()};
 	// render loop
@@ -174,7 +175,8 @@ int main() {
 		// setters
 
 		if (shouldUseOscValues) {
-			particleSystem.setAttractionForce(attractionForce);
+			float _clampedAttractionForce = std::clamp(static_cast<float>(osc._force), 0.0f, 100.0f);
+			particleSystem.setAttractionForce(_clampedAttractionForce);
 			particleSystem.setAttractionRadius(osc._radius);
 			GeoMa::Vector3F posFromOsc;
 			posFromOsc.x = (osc._attractorX * 80.0f) - 40.0f;

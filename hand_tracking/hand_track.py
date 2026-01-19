@@ -4,7 +4,7 @@ import math
 from pythonosc import udp_client
 
 OSC_IP = "127.0.0.1"
-OSC_PORT = 7000
+OSC_PORT = 3333
 CAMERA_INDEX = 0 #issam tu dois ptet changer ça chez toi 
 client = udp_client.SimpleUDPClient(OSC_IP, OSC_PORT)
 
