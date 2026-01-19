@@ -240,7 +240,6 @@ int main() {
 
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
-		//shader.SetUniform4f("Color", {1.0f, 0.5f, 0.2f, 1.0f * particleSystem.lifespan});
 		particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
