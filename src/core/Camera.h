@@ -7,6 +7,7 @@ namespace Pesto{
 class Camera
 {
 public:
+    Camera() = default;
     Camera(Window* window, GeoMa::Vector3F position);
     ~Camera();
 

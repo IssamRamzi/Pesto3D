@@ -19,7 +19,12 @@ if(WIN32)
 else()
 	set(OSCPACK_NET
 		${OSCPACK_DIR}/ip/posix/UdpSocket.cpp
-		${OSCPACK_DIR}/ip/posix/NetworkingUtils.cpp)
+		${OSCPACK_DIR}/ip/posix/NetworkingUtils.cpp
+			test.c
+			src/Application.cpp
+			src/Application.h
+			src/graphics/FrameBuffer.cpp
+			src/graphics/FrameBuffer.h)
 endif()
 
 file(GLOB_RECURSE SOURCE_FILES

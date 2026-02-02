@@ -8,7 +8,7 @@
 #include "Particle.h"
 
 namespace Pesto {
-    #define MAX_PARTICLES 100000
+    #define MAX_PARTICLES 1000000
 
     class ParticleSystem
     {
@@ -45,9 +45,6 @@ namespace Pesto {
         std::vector<GeoMa::Vector3F> _sizes;
         std::vector<float> _lifetimes;
         ForceManager _attractor;
-
-        ForceManager _attractor;
-
 
 
     };

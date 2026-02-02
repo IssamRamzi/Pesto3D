@@ -3,7 +3,7 @@ out vec4 FragColor;
 in vec2 TextureCoordinates;
 uniform sampler2D screenTexture;
 
-const float offset = 1.0f / 600.0f;
+const float offset = 1.0f / 1.0f;
 
 void main()
 {
