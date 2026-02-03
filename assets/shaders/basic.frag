@@ -5,11 +5,12 @@ in float vLife;
 in vec3 uvConverted;
 in vec3 fragPos;
 
-// uniform vec3 lightPos; maybe to add to mouse pos at some time or else i guess
+
+ uniform vec3 lightPos;
 
 void main()
 {
-   vec3 lightPos = vec3(0.0f, 0.0f, 30.0f);
+   //vec3 lightPos = vec3(0.0f, 0.0f, 30.0f);
    vec3 recenteredPos = vec3((uvConverted.x * 2.0f)-1.0f, (uvConverted.y * 2.0f)-1.0f, 0.0f);
    float distQ = dot(recenteredPos.xy, recenteredPos.xy);
 
@@ -21,7 +22,7 @@ void main()
    vec3 lightDir = normalize(lightPos - fragPos);
    vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
    float diffuseStrength = max(0.0f, dot(lightDir, normal));
-   float ambient = 0.1f;
+   float ambient = 0.2f;
    float totalBrightness = diffuseStrength + ambient;
    vec3 viewDir = vec3(0.0, 0.0, 1.0);
    vec3 reflectDir = reflect(-lightDir, normal);

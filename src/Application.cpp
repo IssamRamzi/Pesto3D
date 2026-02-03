@@ -183,6 +183,9 @@ void Application::Run() {
 
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
+		GeoMa::Vector3F lightPos = attractorPosition;
+		lightPos.z += 20.0f;
+		shader.SetUniform3f("lightPos", lightPos);
 		particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
