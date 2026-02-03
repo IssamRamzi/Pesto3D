@@ -1,9 +1,9 @@
+#pragma once
 #include <memory>
+#include <string.h>
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Utils.h"
-
-#pragma once
 
 #ifndef MATRIX4_H
 #define MATRIX4_H

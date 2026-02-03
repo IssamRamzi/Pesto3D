@@ -23,11 +23,20 @@ float rand(vec2 co)
 //uniform float particleSize;
 
 out float vLife;
+out vec3 uvConverted;
+out vec3 fragPos;
+
+vec3 convertUv(vec3 positions)
+{
+    vec3 newPos = vec3(positions.x + 0.5f, positions.y + 0.5f, 0.0f);
+    return newPos;
+}
 
 void main()
 {
     //lifetime = l;
     vLife = aLifetime;
+    uvConverted = convertUv(aPos);
     float r = rand(aInstancePos.xy);
     float g = rand(aInstancePos.yz + 10.0);
     float b = rand(aInstancePos.xz + 20.0);
@@ -43,5 +52,8 @@ void main()
     model[3][0] = aInstancePos.x;
     model[3][1] = aInstancePos.y;
     model[3][2] = aInstancePos.z;
+    vec4 worldPos = model * vec4(aPos, 1.0f);
+    fragPos = vec3(worldPos);
+
     gl_Position = camMatrix * model * vec4(aPos, 1.0);
 }
