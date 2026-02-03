@@ -85,7 +85,8 @@ void Application::Run() {
 	quadVAO.AddBuffer(quadVBO, 0, 2, 4 * sizeof(float), (void*)0);
 	quadVAO.AddBuffer(quadVBO, 1, 2, 4 * sizeof(float), (void*)(2 * sizeof(float)));quadVAO.Unbind();
 	quadVAO.Unbind();
-	Pesto::FrameBuffer fbo{window.GetWindowWidth(), window.GetWindowHeight()};
+	auto fbo = std::make_unique<Pesto::FrameBuffer>(window.GetWindowWidth(), window.GetWindowHeight(), hdrOn);
+	//Pesto::FrameBuffer fbo{window.GetWindowWidth(), window.GetWindowHeight(), hdrOn};
 
 
 	vao.Bind();
@@ -155,7 +156,7 @@ void Application::Run() {
 		camera.ProcessKeyboardInputs();
 		ProcessInput();
 
-		fbo.Bind();
+		fbo->Bind();
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.0f,114.0f/255.0f,229.0f/255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -203,12 +204,12 @@ void Application::Run() {
 		// drawing particles
 		screenShader.EnableShader();
 		quadVAO.Bind();
-		fbo.BindTexture();
+		fbo->BindTexture();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		screenShader.DisableShader();
 
 		// imgui
-		DrawUI();
+		DrawUI(fbo);
 		glfwSwapBuffers(window.GetWindowAddr());
 		glfwPollEvents();
 
@@ -252,7 +253,7 @@ void Application::ProcessInput() {
 	}
 }
 
-void Application::DrawUI() {
+void Application::DrawUI(std::unique_ptr<Pesto::FrameBuffer>& fbo) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -289,6 +290,11 @@ void Application::DrawUI() {
 	}
 	if (ImGui::CollapsingHeader("Use PESTO")) {
 		ImGui::Checkbox("Use Pesto", &shouldUsePesto);
+	}
+	if (ImGui::CollapsingHeader("Use HDR")) {
+		if (ImGui::Checkbox("HDR", &hdrOn)) {
+			fbo = std::make_unique<Pesto::FrameBuffer>(window.GetWindowWidth(), window.GetWindowHeight(), hdrOn);
+		}
 	}
 	ImGui::End();
 	ImGui::Render();

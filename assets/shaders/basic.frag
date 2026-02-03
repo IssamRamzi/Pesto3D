@@ -22,8 +22,9 @@ void main()
    vec3 lightDir = normalize(lightPos - fragPos);
    vec3 lightColor = vec3(1.0f, 56.0f/255.0f, 0.0f);
    float diffuseStrength = max(0.0f, dot(lightDir, normal));
+   float brightnessMultiplier = 2.0f;
    float ambient = 0.1f;
-   float totalBrightness = diffuseStrength + ambient;
+   float totalBrightness = (diffuseStrength + ambient) * brightnessMultiplier;
    vec3 viewDir = vec3(0.0, 0.0, 1.0);
    vec3 reflectDir = reflect(-lightDir, normal);
    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);

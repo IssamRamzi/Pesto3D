@@ -4,11 +4,13 @@
 
 #ifndef PESTO3D_APPLICATION_H
 #define PESTO3D_APPLICATION_H
+#include <memory>
 #include "core/Camera.h"
 #include "core/Window.h"
 #include "math/GeoMa.h"
 #include "particles/ParticleSystem.h"
 #include "osc/OscReceiver.h"
+#include "graphics/FrameBuffer.h"
 
 
 class Application {
@@ -21,7 +23,7 @@ public:
 private:
 
 
-    void DrawUI();
+    void DrawUI(std::unique_ptr<Pesto::FrameBuffer>&fbo);
     void ProcessInput();
     void ApplyOSC();
 
@@ -39,6 +41,7 @@ private:
     bool shouldUseOscValues = false;
     bool shouldUsePesto = false;
     bool shouldDrawCubeMap = false;
+    bool hdrOn = false;
 
     bool drawImgui = false;
 

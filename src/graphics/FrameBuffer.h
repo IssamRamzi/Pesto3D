@@ -10,13 +10,15 @@
 namespace Pesto {
     class FrameBuffer : iBuffer {
     public:
-        FrameBuffer(f32 width, f32 height);
+        FrameBuffer(f32 width, f32 height, bool useHdr);
+        ~FrameBuffer();
         void Bind();
         void Unbind();
         void BindTexture();
 
     private:
         GLuint m_ColorTexture, m_RBO;
+        bool _useHdr;
     };
 
 
