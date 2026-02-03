@@ -20,7 +20,6 @@ else()
 	set(OSCPACK_NET
 		${OSCPACK_DIR}/ip/posix/UdpSocket.cpp
 		${OSCPACK_DIR}/ip/posix/NetworkingUtils.cpp
-			test.c
 			src/Application.cpp
 			src/Application.h
 			src/graphics/FrameBuffer.cpp

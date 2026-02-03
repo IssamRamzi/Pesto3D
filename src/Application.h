@@ -33,9 +33,11 @@ private:
 
     float attractionForce = 20.0f;
     float attractionRadius = 20.0f;
+    float zDepthLight = 15.0f;
     GeoMa::Vector3F attractorPosition = GeoMa::Vector3F::ZERO;
 
     bool shouldUseOscValues = false;
+    bool shouldUsePesto = false;
     bool shouldDrawCubeMap = false;
 
     bool drawImgui = false;

@@ -20,9 +20,9 @@ void main()
    float z = sqrt(1.0 - distQ);
    vec3 normal = vec3(recenteredPos.x, recenteredPos.y, z);
    vec3 lightDir = normalize(lightPos - fragPos);
-   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
+   vec3 lightColor = vec3(1.0f, 56.0f/255.0f, 0.0f);
    float diffuseStrength = max(0.0f, dot(lightDir, normal));
-   float ambient = 0.2f;
+   float ambient = 0.1f;
    float totalBrightness = diffuseStrength + ambient;
    vec3 viewDir = vec3(0.0, 0.0, 1.0);
    vec3 reflectDir = reflect(-lightDir, normal);

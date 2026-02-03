@@ -157,7 +157,7 @@ void Application::Run() {
 
 		fbo.Bind();
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.0,0.0,0.0f, 1.0f);
+		glClearColor(0.0f,114.0f/255.0f,229.0f/255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// render
 		// ------
@@ -184,7 +184,7 @@ void Application::Run() {
 		shader.EnableShader();
 		shader.SetUniformMat4("camMatrix", camera.CalculateMatrix(0.1, 300));
 		GeoMa::Vector3F lightPos = attractorPosition;
-		lightPos.z += 20.0f;
+		lightPos.z = zDepthLight;
 		shader.SetUniform3f("lightPos", lightPos);
 		particleSystem.render(shader);
 		vao.Bind();
@@ -223,9 +223,14 @@ void Application::Destroy() {
 }
 
 void Application::ApplyOSC() {
-	if (shouldUseOscValues) {
+	if (shouldUsePesto) {
 		float _clampedAttractionForce = std::clamp(static_cast<float>(attractionForce), 0.0f, 100.0f);
 		particleSystem.setAttractionForce(_clampedAttractionForce);
+	} else {
+		particleSystem.setAttractionForce(attractionForce);
+	}
+
+	if (shouldUseOscValues) {
 		particleSystem.setAttractionRadius(osc._radius);
 		GeoMa::Vector3F posFromOsc;
 		posFromOsc.x = (osc._attractorX * 80.0f) - 40.0f;
@@ -233,7 +238,6 @@ void Application::ApplyOSC() {
 		posFromOsc.z = 0.0f;
 		particleSystem.setAttractionPosition(posFromOsc);
 	} else {
-		particleSystem.setAttractionForce(attractionForce);
 		particleSystem.setAttractionRadius(attractionRadius);
 		particleSystem.setAttractionPosition(attractorPosition);
 	}
@@ -279,6 +283,12 @@ void Application::DrawUI() {
 	}
 	if (ImGui::CollapsingHeader("OSC")) {
 		ImGui::Checkbox("Use OSC", &shouldUseOscValues);
+	}
+	if (ImGui::CollapsingHeader("Z light depth")) {
+		ImGui::SliderFloat("Z light pos", &zDepthLight, -50.0f, 50.0f);
+	}
+	if (ImGui::CollapsingHeader("Use PESTO")) {
+		ImGui::Checkbox("Use Pesto", &shouldUsePesto);
 	}
 	ImGui::End();
 	ImGui::Render();
