@@ -6,7 +6,7 @@ in vec3 uvConverted;
 in vec3 fragPos;
 
 
- uniform vec3 lightPos;
+uniform vec3 lightPos;
 
 void main()
 {

@@ -36,6 +36,8 @@ private:
     float attractionForce = 20.0f;
     float attractionRadius = 20.0f;
     float zDepthLight = 15.0f;
+    float gammaValue = 2.2f;
+    float exposureValue = 2.0f;
     GeoMa::Vector3F attractorPosition = GeoMa::Vector3F::ZERO;
 
     bool shouldUseOscValues = false;

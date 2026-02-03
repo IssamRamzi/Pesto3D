@@ -187,6 +187,7 @@ void Application::Run() {
 		GeoMa::Vector3F lightPos = attractorPosition;
 		lightPos.z = zDepthLight;
 		shader.SetUniform3f("lightPos", lightPos);
+
 		particleSystem.render(shader);
 		vao.Bind();
 #ifdef DRAW_QUADS
@@ -203,6 +204,9 @@ void Application::Run() {
 
 		// drawing particles
 		screenShader.EnableShader();
+		screenShader.SetUniform1f("gamma", gammaValue);
+		screenShader.SetUniform1i("hdrEnabled", hdrOn);
+		screenShader.SetUniform1f("exposure", exposureValue);
 		quadVAO.Bind();
 		fbo->BindTexture();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -294,6 +298,10 @@ void Application::DrawUI(std::unique_ptr<Pesto::FrameBuffer>& fbo) {
 	if (ImGui::CollapsingHeader("Use HDR")) {
 		if (ImGui::Checkbox("HDR", &hdrOn)) {
 			fbo = std::make_unique<Pesto::FrameBuffer>(window.GetWindowWidth(), window.GetWindowHeight(), hdrOn);
+		}
+		if (ImGui::CollapsingHeader("Postprocessing values")) {
+			ImGui::SliderFloat("Gamma value", &gammaValue, 0.0f, 10.0f);
+			ImGui::SliderFloat("Exposure value", &exposureValue, 0.0f, 10.0f);
 		}
 	}
 	ImGui::End();
